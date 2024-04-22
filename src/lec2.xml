@@ -1,0 +1,203 @@
+<div>
+  <lecture title="Lecture 2: Cantor's Theory of Cardinality">
+    <page title="When do two sets have the same size?">
+      <vid2 desc="" start="00:00:00" end="00:04:48" />
+
+      <p> <blue>Q:</blue> When do two sets `A` and `B` have the same size? </p>
+      
+      <p>
+        <blue>A: </blue> Cantor said that two sets have the same size
+        when each of the elements of the both sets can be paired off.
+      </p>
+      
+      <p>
+        Given two sets
+        \[ \{ a, b ,c \} \quad \text{and} \quad \{1, 2, 3\} \]
+
+        Each member of the first set can be paired off uniquely with
+        the second. Recall that in general, no two members of a set
+        are equal.
+        
+        <align>
+          a &amp;\to 1 \\
+          b &amp;\to 2 \\
+          c &amp;\to 3
+        </align>
+      </p>
+    </page>
+
+    <page title="Function Review">
+      <vid2 desc="" start="00:04:48" end="00:11:50" />
+
+      <definition desc="function">
+	    If `A` and `B` are sets, then a <u>function</u> `f:A \to B` is
+	    a mapping that assigns to each `x \in A` a unique element `f(x) \in B`.
+      </definition>
+      
+      <scribe who="dar">
+        subtlety warning, in the following definition of direct image,
+        please notice that `f(C)` is notation where `f` is applied to
+        an <i>entire subset</i>.
+      </scribe>
+      
+      <definition desc="direct image">
+
+        Let `f: A \to B`, if `C \subset A`, we define the <u>direct image</u> `f(C)`
+
+          <align>
+			f(C)
+            &amp;:= \{\forall y \in B,\ \exists x \in C,\ y = f(x) \} \\
+			&amp;= \{ f(x) : x \in C \}.
+          </align>		  
+
+      </definition>
+      
+      <definition desc="inverse image">
+        The <term>inverse image</term> of a subset `D \subset B` is, 
+          
+        \[ f^{-1}(D) := \{ x \in A : f(x) \in D \}. \]
+      </definition>
+
+      <hr/>      
+
+      <center> <img src="/media/images/function-image-inv-image.svg"/> </center>
+      
+      <p>
+        Given the sets `A` and `B` illustrated above, let's see how
+        `f` maps some subsets from `A` to `B`.
+        
+        <align>
+        f(C) &amp;= \{ y \in B, \exists x \in C, y = f(x) \} \\
+        &amp;= \{ f(x) : x \in C \} \\
+        </align>
+
+        <align>
+        f(\{1, 2\}) &amp;= \{a\}  \\
+        f(\{1, 3\}) &amp;= \{a, c\} \\ 
+        f^{-1}(\{ a \}) &amp;= \{1, 2\} \\
+        f^{-1}(\{a,c,d \}) &amp;= \{1,2,3,4\}
+        </align>
+      </p>
+      
+    </page>
+
+    <page title="Injective, Surjective, Bijective">
+      <vid2 desc="" start="00:11:50" end="00:17:32" />
+      <definition>
+        let `f: A\to B`, where `f` is <term>injective</term> or
+        one-to-one if
+
+        \[ f(x_1) = f(x_2) \implies x_1 = x_2. \]
+        
+        equivalently, the contrapositive
+
+        \[ x_1 \ne x_2 \implies f(x_1) \ne f(x_2). \]
+      </definition>
+      
+      <definition>
+        if f(A) = B then `f` is <term>surjective</term> or
+        <term>onto</term>. Equivalently,
+
+        \[ \forall y \in B,\ \exists x \in A,\ f(x)=y. \]
+      </definition>
+    </page>
+
+    <page title="Composition">
+      <vid2 desc="" start="00:17:53" end="00:20:37" />
+
+      dfn
+      "g after f"
+    </page>
+
+    <page title="Cardinality">
+      <vid2 desc="" start="00:20:37" end="00:29:00" />
+	  
+      <definition>
+		Two set `A` and `B` have the same cardinality if there exists a bijective function `f: A \to B`
+	  </definition>
+
+      <p> Here is some short hand for cardinality relations: </p>
+
+	  <ul>
+		<li>if |A| equals |B|, we write `|A| = |B|`.</li>
+		<li>if `|A| = |{1, ..., n}|` we write `|A| = n`.</li>
+		<li>if there exists injective function `f:A \to B` we write `|A| \le |B|`.</li>
+		<li>if `|A| \le |B|` but `|A| \ne |B|` we write `|A| \lt |B|`.</li>
+	  </ul>      
+    </page>
+
+    <page title="Theorem: Cantor-Schroder-Bernstein">
+      <vid2 desc="" start="00:29:00" end="00:30:26" />
+
+      <theorem>
+        by Cantor-Schroder-Bernstein
+        <p> if `|A| \le |B|` and `|B| \le |A|` then `|A| = |B|`</p>
+      </theorem>
+      
+      <p> A proof of this is beyond the scope of this course, but does
+      follow the familiar notion of inequalities on numbers. </p>
+      
+      <vid2 desc="" start="00:30:26" end="00:35:51" />
+      <p>
+        How do we count a set?
+        
+      </p>
+      
+      <definition>
+	    If `|A| = \mathbb{N}` then `A` is <u>countably infinite</u>.
+      </definition>
+
+      <definition>
+        If `A` is finite or countably infinite we say `A` is <u>countable</u>.
+      </definition>
+
+      <definition>
+        If `A` is not countable, then it is <u>uncountable</u>.
+      </definition>
+
+      <hr/>
+      
+      <quote who="Richard Feynman" context="a conversation with Henry Bethe">
+        "Did you know there are twice as many numbers as numbers?"
+      </quote>
+
+      
+      <p> The even and odd numbers are two disjoint subsets that make
+      up the natural numbers. </p>
+      
+      <theorem>
+        for the even numbers, `|\{ 2n : n \in \mathbb{N} \}| = |\mathbb{N}|. `      
+      </theorem>
+      
+      <theorem>
+        for the odd numbers, `|\{ 2n-1 : n \in \mathbb{N} \}| = |\mathbb{N}|. `
+      </theorem>
+
+      <hr/>
+
+      <theorem> if `|A|` = `|B|` then `|B|` = `|A|` </theorem>
+      <proof>
+        Suppose `|A| = |B|`, then there exists a bijective function `f: A \to B`.
+        <br/>
+        `f^{-1}:B \to A` is a bijection, so |B| = |A|.
+      </proof>
+
+      <hr/>
+      
+      <theorem> if `|A| = |B|` and `|B| = |C|` then `|A| = |C|` </theorem>
+        
+      <proof>
+        <span>Suppose `|A| = |B|` and `|B| = |C|`. Then there are bijections `f: A \to B` and `g: B \to C`</span>
+      </proof>
+      
+      <vid2 desc="" start="00:35:50" end="00:35:51" />
+
+      We need to be able to find a bijection
+      
+      <proof>
+        asdf
+      </proof>
+      
+    </page>
+  </lecture>
+</div>
