@@ -1,24 +1,55 @@
 body {
-    font-family: Tinos;
-    max-width: 800px;
-    font-size: 16pt;
+    font-family: Inter;
+    font-size: 15pt;
     margin: auto;
-    background-color: #efefef;
+    background-color: #efefe8;
     color: #333;
 }
 
-.katex { font-size: 1em !important; } 
+.katex { font-size: 1.2em !important; } 
+
+.layout {
+    display: flex;
+}
+
+.sidebar {
+    min-width: 250px;
+    padding-left: 10px;
+}
+
+.logo {
+    padding: 5px;
+    position: sticky;
+    top: 0;
+    /* padding-left: 5px;     */
+    /* justify-content: center; */
+    
+    /* background-color: white; */
+    /* filter: drop-shadow(0px 0px 1px #aaa); */
+    /* border: 1px solid white; */
+             
+}
+
+.logo-title {
+    font-size: 1.4em;
+    top: 0;
+    overflow-y: auto;
+}
+
 
 .page {
-    background-color: #fcfcff;
+    background-color: #fffff8ff;
+    line-height: 1.4em;
     padding-top: 30px;
     padding-left: 50px;
     padding-right: 50px;
     padding-bottom: 30px;
+    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 100px;
-    line-height: 1.3em;
     filter: drop-shadow(0px 0px 1px #aaa);
     border: 1px solid white;
+    max-width: 800px;
 }
 
 .seek-text {
@@ -44,9 +75,16 @@ body {
     padding-bottom: 10px;
 }
 
+/* Section: definition */
 
 .definition {
     padding-top:10px;
+}
+
+.definition-link {
+    text-decoration: none;
+    font-weight: 600;
+    color: black;                    
 }
 
 .definition-number {
@@ -79,7 +117,6 @@ body {
     padding-left: .7em;
     padding-right: .7em;
 }
-
 
 .theorem-number {
     padding-left: .7em;
@@ -130,6 +167,130 @@ hr {
 
 .term {
     color: blue;
+    font-weight: bold;
+}
+
+.refgroup {
+    font-size: .8em;
+    background-color: pink;
+    font-style; italic;
+}
+
+
+.main {
+}
+
+
+.starbox {
+    font-size: .8em;
+    margin-left: 50px;
+}
+
+.header {
+    background-color: yellow;
+    min-width: 100px
+}
+
+
+.sidenote, aside {
+    display: block;
+    float: right;
+}
+
+
+
+
+ /* Section: Dropdown Button */
+.dropbtn {
+  background-color: #00000000;
+  /* color: white; */
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #FFFFFF;
+  min-width: 560px;
+  box-shadow: 3px 3px 3px 1px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #00000011;} 
+
+iframe.vidframe {
+    aspect-ratio: 16 / 9;
+    height: auto;
+    width: 100%;
+}
+
+
+.fig {
+    margin: 20px;
+}
+
+.fig-text {
+    font-size: .9em;
     font-style: italic;
 }
 
+
+.sidebar-sections {
+    font-size: .8em;
+    text-decoration: none;
+}
+
+.sidebar-sections a {    
+    display: block;
+    padding-bottom: 5px;    
+    text-decoration: none;
+    display: inline-block;
+    /* width: 150px; /\* Set your desired width *\/ */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide any overflowing text */
+    text-overflow: ellipsis; /* Show an ellipsis (...) for truncated text */
+}
+
+.warning {
+    background-color: #ffff0033;
+    padding: 15px;
+    border-left: 3px solid grey;
+}
+
+
+.book-ref a {
+    font-size: .8em;
+    text-decoration: none;
+    display: block;
+    padding: 10px;    
+    text-decoration: none;
+    display: inline-block;
+    /* width: 150px; /\* Set your desired width *\/ */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide any overflowing text */
+    text-overflow: ellipsis; /* Show an ellipsis (...) for truncated text */    
+}
