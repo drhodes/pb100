@@ -28,7 +28,6 @@ LECTURE_BUILD_DIR=${BUILD}/lectures
 ${LECTURE_BUILD_DIR}:
 	$(shell mkdir -p ${BUILD}/lectures)
 
-
 .PHONY: about
 about: ${BUILD}/lectures/about.html
 ${BUILD}/lectures/about.html: venv ./src/about.html ${MACROS} ${LECTURE_BUILD_DIR}
@@ -37,10 +36,11 @@ ${BUILD}/lectures/about.html: venv ./src/about.html ${MACROS} ${LECTURE_BUILD_DI
 	--infile ./src/about.html \
 	--outfile ${BUILD}/lectures/about.html
 
-	# ---------------------------------
-	echo "<!DOCTYPE html>" > /tmp/foo
-	cat /tmp/foo ${BUILD}/lectures/about.html > /tmp/foo2
-	mv /tmp/foo2 ${BUILD}/lectures/about.html
+	sed -i '1s/^/<!DOCTYPE html>\n/' ${BUILD}/lectures/about.html
+
+	# echo "<!DOCTYPE html>" > /tmp/foo
+	# cat /tmp/foo ${BUILD}/lectures/about.html > /tmp/foo2
+	# mv /tmp/foo2 ${BUILD}/lectures/about.html
 
 
 .PHONY: lec1
@@ -51,10 +51,7 @@ ${BUILD}/lectures/lec1.html: venv ./src/lec1.html ${MACROS} ${LECTURE_BUILD_DIR}
 	--infile ./src/lec1.html \
 	--outfile ${BUILD}/lectures/lec1.html
 
-	# ---------------------------------
-	echo "<!DOCTYPE html>" > /tmp/foo
-	cat /tmp/foo ${BUILD}/lectures/lec1.html > /tmp/foo2
-	mv /tmp/foo2 ${BUILD}/lectures/lec1.html
+	sed -i '1s/^/<!DOCTYPE html>\n/' ${BUILD}/lectures/lec1.html
 
 
 .PHONY: lec2
@@ -65,10 +62,7 @@ ${BUILD}/lectures/lec2.html: venv ./src/lec2.xml ${MACROS} ${LECTURE_BUILD_DIR}
 	--infile ./src/lec2.xml \
 	--outfile ${BUILD}/lectures/lec2.html
 
-	# ---------------------------------
-	echo "<!DOCTYPE html>" > /tmp/foo
-	cat /tmp/foo ${BUILD}/lectures/lec2.html > /tmp/foo2
-	mv /tmp/foo2 ${BUILD}/lectures/lec2.html
+	sed -i '1s/^/<!DOCTYPE html>\n/' ${BUILD}/lectures/lec2.html
 
 
 BUILD_INK = ${BUILD}/inkproofs/
