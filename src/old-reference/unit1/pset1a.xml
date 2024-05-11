@@ -1,0 +1,14 @@
+<lecture title="Problem Set 1A">
+
+    <!-- ============================================================================= -->
+    <page title="Demorgan's with universe A">
+        <html>            
+            <h1>Problem 0.3.6 </h1>            
+            <h3>Prove the following equality</h3>
+            \( A \cap (B \cup C) = (A \cap B) \cup (A \cap C) \) 
+        </html>
+
+        <proof-lean filename="lean/unit1/ex-0-3-6.lean"/>
+    </page>
+
+</lecture>

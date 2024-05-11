@@ -1,0 +1,20 @@
+<page title="Using Induction">
+  <vid1 desc="De Morgan's first law" start="00:54:52" end="01:24:52" />
+
+  <html>
+    <p> How is induction used in practice? </p>
+
+    <p>
+      We want to prove some statement,
+      \[ \forall n \in \mathbb{N}, P(n)\ \text{is true} \]
+      
+      Then there are two smaller proofs, for the <blue>base case</blue> and the <blue>inductive step</blue>
+      
+      <bp> 
+      </bp>
+      
+    </p>
+
+    
+  </html>
+</page>

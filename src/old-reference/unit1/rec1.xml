@@ -1,0 +1,46 @@
+<lecture title="Recitation 1: Induction">
+  
+  <page title="Motivation">
+    <html>
+     
+      <p>
+        In this recitation we will explore induction. You may have
+        noticed that the book and lectures have defined natural
+        numbers starting from `1`. In contrast, the Lean MathLib nats
+        start at `0`. That's ok, we can work around it!
+      </p>
+      
+      <center>
+        <div> <b>Proofs involving `n` in `\mathbb{N}_1` </b></div>
+        <div> <blue> become </blue> </div>
+        <div> <b> Proofs involving `n+1` in `\mathbb{N}_0` </b></div>
+      </center>
+
+      <br/>
+      
+      <p>
+        But, no need to worry, we'll clear up these differences as they arise.
+      </p>
+      
+      <p>
+        Beyond working with the built in <code> induction </code>
+        tactic, first we'll implement induction from scratch without
+        the tactic, starting on the next page. So, put on your
+        recursion hat!
+      </p>
+    </html>
+  </page>
+
+  <page title="Induction, desugared">           
+    <import-markdown filename="./unit1/rec1-manual-induction.md"/>
+  </page>
+
+  <page title="Induction, lectures example 2">            
+    <proof-lean filename="lean/rec1_1.lean"/>
+  </page>
+
+
+
+
+  
+</lecture>

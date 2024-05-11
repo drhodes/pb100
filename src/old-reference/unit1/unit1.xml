@@ -1,0 +1,24 @@
+
+<unit name="Unit 1: Sets and Cantor's Theory of Cardinality"
+  start="2024-06-05">
+
+  <import-lecture filename="unit1/lec1.xml" />
+  <import-lecture filename="unit1/rec1.xml" />
+  <import-lecture filename="unit1/lec2.xml" />
+  
+  <!-- <import-lecture filename="unit1/pset1a.xml" /> -->
+
+  
+
+</unit>
+
+
+
+
+<!-- <unit-policy> -->
+<!--   <graded>true</graded> -->
+<!--   <start-date>2024-02-24</start-date> -->
+<!--   <due-after>14</due-after> -->
+<!--   <ext>0</ext> -->
+<!-- </unit-policy> -->
+  

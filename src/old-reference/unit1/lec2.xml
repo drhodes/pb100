@@ -1,0 +1,129 @@
+ <lecture title="Lecture 2: Cantor's Theory of Cardinality">
+  <page title="When do two sets have the same size?">
+    <vid2 desc="" start="00:00:00" end="00:04:48" />
+
+    <html>
+      <p> <blue>Q:</blue> When do two sets `A` and `B` have the same size? </p>
+      
+      <p> <blue>A: </blue> (Kind of.) Cantor said that two sets have
+      the same size when the elements of the two sets can be paired
+      off.</p>
+
+      <p> Given two sets
+      \[ \{ a, b ,c \}, \{1, 2 , 3\} \]
+
+      Each member of the first set can be paired off uniquely.j
+      
+      \begin{align}
+      a &amp;\to 1 \\
+      b &amp;\to 2 \\
+      c &amp;\to 3
+      \end{align}
+      </p>
+    </html>
+  </page>
+
+  <page title="Function Review">
+    <vid2 desc="" start="00:04:48" end="00:11:50" />
+    
+    <html>
+      <def desc="function">
+        If `A, B` are sets, then a function `f: A \to B` is a mapping
+        that assigns to each `x \in A` a unique element `f(x) \in B`.
+      </def>
+
+      <def desc="direct image">
+        Let `f: A \to B`,
+        <p>
+          1) if `C \subset A`, we define
+
+          \begin{align}
+          f(C) &amp;= \{ y \in B, \exists x \in C, y = f(x) \} \\
+               &amp;= \{ f(x) : x \in C \}.
+          \end{align}
+        </p>
+      </def>
+              
+      <def desc="inverse image">
+        <p>
+          Define the <blue>inverse image</blue> of a subset `D \subset B`, 
+          
+          \\[ f^{-1}(D) = \{ x \in A : f(x) \in D \}. \\]
+          
+        </p>
+      </def>
+
+      <img src="/static/images_function-image-inv-image.svg"/>
+
+      <p>
+        Given the sets `A` and `B` illustrated above, let's see how
+        `f` maps some subsets from `A` to `B`.
+        
+        \begin{align}
+        f(C) &amp;= \{ y \in B, \exists x \in C, y = f(x) \} \\
+             &amp;= \{ f(x) : x \in C \}
+        \end{align}
+             
+        f(\{1, 2\}) &amp;= \{a\} 
+        f(\{1, 3\}) &amp;= \{a, c\}
+        f^{-1}(\{ a \}) &amp;= \{1, 2\}
+        f^{-1}(\{a,c,d \}) &amp;= \{1,2,3,4\}
+        
+      </p>
+    </html>
+  </page>
+
+  <page title="Injective, Surjective, Bijective">
+    <vid2 desc="" start="00:11:50" end="00:17:32" />
+    
+    <def>
+      let `f: A \to B`
+
+      <p>
+        1) f is <u>injective</u> or <u> one-to-one </u> if
+
+        \\[ f(x_1) = f(x_2) \implies x_1 = x_2 \\]
+      </p>      
+    </def>
+    
+    TODO
+  </page>
+
+  <page title="Composition">
+    <vid2 desc="" start="00:17:53" end="00:20:37" />
+
+    dfn
+    "g after f"
+  </page>
+
+  <page title="Cardinality">
+    <vid2 desc="" start="00:20:37" end="00:29:00" />
+
+
+    Dfn: Two set `A` and `B` have the same cardinality if there exists
+    a bijective function `f: A \to B`
+
+    Short hand notation, when two sets have the same caridinality, we write
+
+    1) `|A| = |B|`
+
+    2) if `|A| = |{1, ..., n}| we write `|A| = n`.
+
+    3) if there exists injective function `f:A \to B` we write `|A| \le |B|`.
+
+    4) if `|A| \le |B|` but `|A| \ne |B|` we write `|A| \lt |B|`.
+    
+  </page>
+
+  <page title="Theorem: Cantor-Schroder-Bernstein">
+    <vid2 desc="" start="00:29:00" end="00:29:" />
+
+    if |A| \le |B| and |B| \le |A| then |A| = |B|
+
+    <code>
+      theorem cantor_schroder_bernstein (A B: Set) : card A \le card B \and card B \le card A \to card A = card B
+    </code>
+  </page>
+
+  
+</lecture>
