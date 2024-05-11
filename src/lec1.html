@@ -1,489 +1,608 @@
 
-<div>
-  <lecture title="Lecture 1: Sets, Set Operations and Mathematical Induction">
-    <page title="Motivation">
-      <h4> The three main goals of this course are: </h4>
+<lecture title="Lecture 1: Sets and Induction">
+  <page title="Motivation">
+    <h4> The three main goals of this course are: </h4>
 
-      <ul>
-        <li> Gain experience with proofs. </li>
-        <li> Have fun proving statements about real numbers, functions, and limits. </li>
-        <li> Formalize proofs in the Lean proof assistant.. (it's more addictive than sudoku - really!) </li>
-      </ul>
-      
-      <p> <bb>Industry needs proofs</bb>! </p>
+    <ul>
+      <li> Gain experience with proofs. </li>
+      <li> Have fun proving statements about real numbers, functions, and limits. </li>
+      <li> Formalize proofs in the Lean proof assistant..
+        (it's more addictive than <a href="https://github.com/TwoFX/sudoku">sudoku</a> - really!)
+      </li>      
+    </ul>
+    
+    <p> <bb>Industry needs proofs (<i>even if they think otherwise</i>)</bb>! </p>
 
-      <p>
-        If you're investing money, then perhaps you'd like to know
-        that your strategies are sound and that the calculated
-        probabilities of certain events are accurate and actually mean
-        what they should! The tools you learn in this course will
-        prepare you for understanding metric spaces, which are the
-        foundation of probability and statistics.
-      </p>
+    <ul>
+      <li>
+        Financial investers who employ strategies that depend on
+        probability would like to know their calculations are
+        meaningful and accurate. This course will prepare you for
+        understanding metric spaces which serves as the modern
+        foundation of probability and statistics. (needs fact check)
+        <hr/>
+      </li>
 
-      <p>        
-        Encryption is woven through every part of our online world to
-        ensure the security of nations and personal privacy. Without
-        proofs from number theory, we wouldn't be able to rely on
-        programs to keep our secrets safe.
-      </p>
-
-      <p>
+      <li>
         Numerical analysis is used to make guarantees about the errors
         that computers introduce into important calculations, such as
         those guiding spacecraft to the moon, Mars, and beyond. Proofs
         help scientists more reliably make discoveries.
-      </p>
+        <hr/>
+      </li>
 
-      <p>
-        Proof assistants such as Lean enable us to verify and tinker
-        with our reasoning with unparalleled guarantees without
-        relying on peer consensus. The quick feedback loop keeps you
-        the right track while you're learning.
-      </p>      
+      <li>
+        Encryption is woven through every part of our online world to
+        ensure the security of customers, nations and personal
+        communication. Without proofs from number theory, we could not
+        trust software to keep our secrets safe.
+        <br/>
+      </li>
+    </ul>
 
-      <p>
-        Before getting into that, let's hear about the subject at hand
-      </p>
-      
-      <vid1 desc="Motivation" start="00:00:00" end="00:02:50" />
-    </page>
+    <p>
+      Proof assistants such as Lean verify our reasoning with
+      unparalleled guarantees without relying on peer review. The
+      quick feedback loop helps keep learners on track.
+    </p>      
+
+    <p>
+      Before getting into that, let's hear about the subject at hand.
+    </p>
     
-    <page title="Sets Intro">
-      <vid1 desc="Sets Intro" start="00:02:46" end="00:09:56" />
-      
-      <definition>
-        A <u>set</u> is a collection of objects called elements or members of that
-        set. The <u>empty set</u> (denoted `\emptyset`) is the set with no
-        elements.
-      </definition>
-
-      <!-- <import-markdown filename="unit1/markdown-example1.md" /> -->
-
-      <p>For comparing sets `A` and `B`, here are some common
-      definitions with notation </p>
-
-      <definition>
-        The set `A` is a <u>subset</u> of `B`, if every element of `A` is in `B`.
-        \[ A \subset B \quad \text{if} \quad  a \in A \implies a \in B. \]
-      </definition>
-        
-      <definition>
-        <span> `A` and `B` are <u>equal</u>, `\ A = B`, if `A \subset B` and `B \subset A `. </span>
-      </definition>
-        
-      <definition>
-        A set `A` is a <u>proper subset</u> of `B`, `A\subsetneq B` if `A \subset B` and `A\neq B`.
-      </definition>
-      
-    </page>
+    <vid1 desc="Motivation" start="00:00:00" end="00:02:50" />
+  </page>
+  
+  <page title="Sets Intro">
+    <div>
+      This introduction to sets should be review of material covered
+      in the natural numbers game and The Mechanics of Proof.
+    </div>
     
-    <ignore title="Anatomy of implication">
-      <a href="https://math.libretexts.org/Bookshelves/Combinatorics_and_Discrete_Mathematics/A_Spiral_Workbook_for_Discrete_Mathematics_(Kwong)/02%3A_Logic/2.03%3A_Implications">
-        2.3: Implications by Harris Kwong
-      </a>
-      
-      <p>
-        It is essential fully understand logical implication means,
-        and how it is used in logic and math.
-      </p>
-
-      <center><h1><u> You are a nuclear bomb technician. </u></h1></center>
-      
-      <p> You are at a test site in Nevada, standing directly under an atomic bomb. </p>
-      
-      <img src="/static/images_unit1_hydrogen-bomb-technician.png"/>
-
-      <p> Please consider the following:</p>
-      
-      <center-box>
-        <p>"If <bu> the bomb explodes </bu> then <bu>you will die instantly</bu>"</p>
-      </center-box>
-      
-      That statement is designed to be undeniable, and it has the form:
-
-      \\[ A \implies B \\]
-
-      <hr></hr>
-      <p> The <blue>converse</blue> of `A \implies B \quad` is `\quad B \implies A` </p>
-      
-      <center-box>
-        "if <bu>you die instantly</bu> then <bu>the bomb explodes</bu>"
-      </center-box>
-
-      <p> That's false, the detonator is controlled by professionals
-        who are not influenced by your health </p>
-      
-      <hr></hr>
-      <p>The <blue> inverse </blue> of `A \implies B \quad` is `\quad \neg A \implies \neg B`</p>
-
-      <center-box>
-        "If <bu>the bomb does <blue>not</blue> explode</bu> then <bu>
-          you will <blue> not </blue> die instantly </bu>."
-      </center-box>
-      
-      <p> Is that necessarily true? No, you could have a heart attack,
-        a stroke or pick your poison. There's lots of ways to drop
-        dead that have nothing to do with the bomb. </p>
-
-      <hr/>
-      
-      The <blue> contrapositive </blue> of `A \implies B \quad` is `\quad \neg B \implies \neg A`
-      
-      <center-box>
-        "if <bu>you do not die instantly</bu> then <bu>the bomb did not explode</bu>"
-      </center-box>
-      
-      <p> Is that necessarily true? YES! Since you're still standing
-        there, then the bomb most definitely did not go off! </p>
-
-      <center>
-        <img src="/static/images_unit1_inv-conv-contra.png" width="75%"/>
-      </center>
-      
-    </ignore>
+    <br></br>
     
-    <page title="Set builder notation">
-      
+	<ref-logic-and-proof
+      url="https://leanprover.github.io/logic_and_proof/sets_in_lean.html#"
+      chapter="12: Sets in Lean"/>
+    
+    <vid1 desc="Sets Intro" start="00:02:46" end="00:09:56" />
+	
+    <definition>
+      A <term>set</term> is a collection of objects called
+      elements or members of that set. The <term>empty set</term>
+      (denoted `\emptyset`) is the set with no elements.
+    </definition>
+
+    <!-- <import-markdown filename="unit1/markdown-example1.md" /> -->
+
+    <p>
+      For comparing sets `A` and `B`, here are some common definitions
+      with notation.
+    </p>
+
+    <definition>
+      The set `A` is a <term>subset</term> of `B`, if every element of `A` is in `B`.
+      \[ A \subset B \quad \text{if} \quad  a \in A \implies a \in B. \]
+    </definition>
+    
+    <definition>
+      `A` and `B` are <term>equal</term>, `\ A = B`, if `A \subset B` and `B \subset A `.
+    </definition>
+    
+    <definition>
+      The set `A` is a <term>proper subset</term> of `B`, `A\subsetneq B` if `A \subset B` and `A\neq B`.
+    </definition>
+    
+  </page>
+  
+  <page title="Anatomy of implication">
+    <p>
+      It is good to have a strong understanding of logical
+      implication, and how it differs from its use in every day
+      language. The more comfort you have with this idea, the easier
+      it will be to understand <term>induction</term> when it is
+      introduced.
+    </p>
+
+    <p> Here are two resources that are well worth reading <br/>
+    
+    <a href="https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-spring-2015/mit6_042js15_session1.pdf">
+      Chapter 1: Mathematics for computer science </a>
+    <br/>
+    <a href="https://math.libretexts.org/Bookshelves/Combinatorics_and_Discrete_Mathematics/A_Spiral_Workbook_for_Discrete_Mathematics_(Kwong)/02%3A_Logic/2.03%3A_Implications">
+      2.3: Implications by Harris Kwong
+    </a>
+    </p>
+    
+    <center><h1><term> You are a nuclear bomb technician. </term></h1></center>
+    
+    <p> You are at a test site in Nevada, standing directly under an atomic bomb. </p>
+    
+    <center>
+      <img src="/pb100/media/images/unit1/hydrogen-bomb-technician.png" width="75%"/>
+    </center>
+
+    <p> Please consider the following:</p>
+    
+    <center-box>
+      <p>"If <bu> the bomb explodes </bu> then <bu>you will die instantly</bu>"</p>
+    </center-box>
+    
+    That statement is designed to be irrefutable and it has the form:
+
+    \[ A \implies B \]
+
+    <hr></hr>
+    <p> The <term>converse</term> of `A \implies B \quad` is `\quad B \implies A` </p>
+    
+    <center-box>
+      "if <bu>you died instantly</bu> then <bu>the bomb exploded</bu>"
+    </center-box>
+
+    <p> That's not necessarily true, suppose that you did die at the
+      test site.  Consider that the detonator is controlled by
+      professionals who are not influenced by your health. Your death
+      could have been a coincidence, you could have had a heart attack
+      or a stroke. The point is, your death did not cause the bomb to
+      explode, which is what the <term>converse</term> is implying </p>
+    
+    <hr></hr>
+    <p>The <term> inverse </term> of `A \implies B \quad` is `\quad \neg A \implies \neg B`</p>
+
+    <center-box>
+      "If <bu>the bomb does <term>not</term> explode</bu> then <bu>
+        you will <term> not </term> die instantly </bu>."
+    </center-box>
+    
+    <p>
+      Is that necessarily true? No, there is still a chance you could
+      drop dead under the undetonated bomb, for some other unrelated
+      reason.
+    </p>
+
+    <hr/>
+    
+    The <term> contrapositive </term> of `A \implies B \quad` is `\quad \neg B \implies \neg A`
+    
+    <center-box>
+      "if <bu>you do not die instantly</bu> then <bu>the bomb did not explode</bu>"
+    </center-box>
+    
+    <p> Is that necessarily true? YES! Since you're still standing
+      there, then the bomb most definitely did not explode! </p>
+	
+    <fig fname="unit1/inv-conv-contra.png"
+         text="The vertical arrows negate, the horizontal arrows swap the antecendent and consequent"/>
+
+  </page>
+  
+  <page title="Set builder notation">
+    
     <vid1 desc="Set builder notation" start="00:09:56" end="00:14:42" />
 
-    <p> One way to describe a set is using "set-builder notation". We write </p>
+    <p> Set-builder notation is the name of a method used to descibe
+    sets. We write </p>
 
-      \[ \{x \in A \mid P(x)\} \quad \text{or} \quad \{x\mid P(x)\} \]
+    \[ \{x \in A \mid P(x)\} \quad \text{or} \quad \{x\mid P(x)\} \]
 
     <p>
       to mean "all `x \in A` that satisfies property `P(x)`". One example of
-      this would be `\{ x \mid x\ \text{is an even number} \}`. There are a few key
+      this would be,
+      
+      \[ \{ x \mid x\ \text{is an even number} \}. \]
+
+      There are a few key
       sets that we will use throughout this class:
     </p>
 
     <ul>
-      <li> `\mathbb{N}`, The set of natural numbers:`  \{1,2,3,4,\dots\} ` </li>
-      <li> `\mathbb{Z}`, The set of integers: ` \{0, 1, -1, 2, -2, 3, -3, \dots\} ` </li>
-      <li> `\mathbb{Q}`, The set of rational numbers:`  \{\frac{m}{n} \mid m,n\in \mathbb{Z} \land n\neq 0\} ` </li>
+      <li> `\mathbb{N}`, The set of natural numbers: `\{1,2,3,4,\dots\}` </li>
+    </ul>
+
+    <p>
+      Now would be a good time to note that this course is derived
+      from material with the convention that natural numbers start at
+      1. In contrast, the Lean Mathlib has natural numbers that start
+      at 0. This course will provide good practice with working
+      between the two, so please be aware of that.
+    </p>
+    
+    <ul>
+      <li> `\mathbb{Z}`, The set of integers: `\{0, 1, -1, 2, -2, 3, -3, \dots\}` </li>
+      <li> `\mathbb{Q}`, The set of rational numbers: `\{\frac{m}{n} \mid m,n\in \mathbb{Z} \land n\neq 0\}` </li>
       <li> `\mathbb{R}`, The set of real numbers. </li>
     </ul>
 
-    <p> The fourth item on this list brings us to an important question, and the first goal of our course: </p>
+    <p> The fourth item on this list brings us to an important
+    question, and the first big goal of the course: </p>
 
     <p>
-       <b>How do we describe `\mathbb{R}`</b>? The question is
-      deceptively simple, we'll need to cover some ground before
-      answering, but we're getting there, keep going!
+      <b>How do we describe `\mathbb{R}`</b>? We will need to cover
+      some ground before answering, but we are getting there, keep
+      going!
     </p>
     
-    </page>
+  </page>
   
-    <page title="More about sets">
-      <p>Note: the following inclusion</p>
+  <page title="More about sets">
+    <p>Note: the following inclusion</p>
 
-      <p> \[ \mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}. \] </p>
+    <p> \[ \mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}. \] </p>
 
-      <vid1 desc="Set operations" start="00:14:42" end="00:20:55" />
+    <vid1 desc="Set operations" start="00:14:42" end="00:20:55" />
+    
+    <p> In the meantime, let's continue our study of sets and proof
+      methods. Given sets `A` and `B`, we have the following
+      definitions: </p>
+    
+    <definition>
+      The <term>intersection</term> of `A` and `B` is the set
+      \[ A \cap B = \{x\mid x\in A \land x\in B\}. \]
+    </definition>
+    
+    <definition>
+      The <term>union</term> of `A` and `B` is the set
+      \[ A \cup B = \{x\mid x\in A \lor x\in B\}. \]
+    </definition>
+    
+    <definition>
+      The <term>set difference</term> of `A` and `B` is the set
+      \[ A \setminus B = \{x\in A \mid x\notin B\}. \]
+    </definition>
+
+    <definition>
+      The <term>complement</term> of `A` is the set
+      \[ A^c = \{x \mid x\notin A\} \]
+    </definition>
+    
+    <!-- <sidenote> -->
+    <!--     🐘 <b>Note:</b> To those prone to mispelling homophones: the mathematical term -->
+    <!--     <a href="https://mathworld.wolfram.com/ComplementSet.html">compl<b>e</b>ment</a> -->
+    <!--     is different than <a href="https://en.wiktionary.org/wiki/compliment">compl<b>i</b>ment</a> -->
+    <!-- </sidenote> -->
+    
+    <definition>
+      `A` and `B` are <term>disjoint</term> if `A\cap B = \emptyset` 
+    </definition>
+
+    
+    <mchoice display_name="Are you taking notes?">
+      <stmt>Please select the definition of `A \cap B`</stmt>
+      <mchoice-group>
+        <t> ` \{x\mid x\in A \land x\in B\}.`</t>
+        <f> ` \{x\in A \mid x\notin B\}.`</f>
+        <f> ` \{x\mid x\in A \lor x\in B\}.`</f>
+      </mchoice-group>
+    </mchoice>
+
+    
+    <mchoice display_name="almost caught you slacking!">
+      <stmt> Please select the definition of `A \cup B` </stmt>
+      <mchoice-group>
+        <f> `\{x \in A \mid x\notin B\}.` </f>
+        <f> `\{x \mid x \in A \land x\in B\}.` </f>
+        <t> `\{x \mid x \in A \lor x\in B\}.` </t>
+      </mchoice-group>
+    </mchoice>
+
+
+    <mchoice display_name="ok, last one">
+      <stmt> Please select the definition of `A \setminus B` </stmt>
+      <mchoice-group>
+        <f> ` \{x \mid x \in  A \land  x\in B\}. ` </f>
+        <f> ` \{x \mid x \in  A \lor   x\in B\}. ` </f>
+        <t> ` \{x \in A  \mid x \notin B     \}. ` </t>
+      </mchoice-group>
+    </mchoice>
+
+  </page>
+  
+  <page title="De Morgan's Laws">
+    <vid1 desc="De Morgan's Laws" start="00:20:55" end="00:28:24" />
+
+    <theorem desc="De Morgan's Laws">
+      <p>If `A,B,C` are sets then</p>
       
-      <p> In the meantime, let's continue our study of sets and proof
-        methods. Given sets `A` and `B`, we have the following
-        definitions: </p>
+      <align>
+        (B\cup C)^c &amp;= B^c \cap C^c \\
+        (B\cap C)^c &amp;= B^c \cup C^c \\
+        A \setminus (B \cup C) &amp;= (A\setminus B) \cap (A\setminus C) \\ 
+        A \setminus (B \cap C) &amp;= (A\setminus B) \cup (A\setminus C) \\
+      </align>
+    </theorem>
+
+    <html>
+      <center>
+        <img src="/static/images_demorgans-law-1.png" alt="demorgan's law" />
+      </center>
+    </html>
+
+  </page>
+
+  <page title="Proof: De Morgan's first law">
+    <vid1 desc="De Morgan's first law" start="00:28:24" end="00:35:34" />
+
+    <mchoice display_name="Recall a definition">
+      <stmt>
+        Given two sets `T` and `U`, please select the definition of `T = U`
+      </stmt>
+      <mchoice-group>
+        <t> ` (T = U) := (T \subset U) \land (U \subset T) ` </t>
+        <f> ` (T = U) := (T \subset U) \lor (U \subset T) ` </f>
+        <f> ` (T = U) := (T \subset U) \subset (U \subset T) ` </f>
+        <f> ` (T = U) := (U \subset T) \subset (T \subset U) ` </f>
+      </mchoice-group>
+    </mchoice>
+    
+    <proof desc="">
+      <p>
+        Let `B`, `C` be sets.  We are proving,
+
+        \[ ( B \cup C )^c = (B^c \cap C^c) \]
+
+        Start by rewriting the equality in terms of its definition,
+        
+        \[
+        (B \cup C)^c \subset ( B^c \cap C^c )
+        \quad \text{and} \quad
+        (B^c \cap C^c)^c \subset ( B \cup C )^c
+        \]
+      </p>
+
       
-      <definition>
-        The <u>intersection</u> of `A` and `B` is the set `A \cap B = \{x\mid x\in A \land x\in B\}.`
-      </definition>
-      
-      <definition>
-        The <u>union</u> of `A` and `B` is the set `A \cup B = \{x\mid x\in A \lor x\in B\}.`
-      </definition>
-      
-      <definition>
-        The <u>set difference</u> of `A` and `B` is the set `A \setminus B = \{x\in A \mid x\notin B\}.`
-      </definition>
-      
-      <definition>
-        The <u>complement</u> of `A` is the set `A^c = \{x \mid x\notin A\}`
-      </definition>
-      
-      <definition>
-        `A` and `B` are <u>disjoint</u> if `A\cap B = \emptyset` 
-      </definition>
+      <p>For the first inclusion, show that `(B \cup C)^c \subset ( B^c \cap C^c ) `. </p>
 
       <p>
-        🐘 <b>Note:</b> To those prone to mispelling homophones: the mathematical term
-        <a href="https://mathworld.wolfram.com/ComplementSet.html">compl<b>e</b>ment</a>
-        is different than <a href="https://en.wiktionary.org/wiki/compliment">compl<b>i</b>ment</a>
+        let `x \in (B \cup C)^c `, then:
+
+        <align>
+          x \notin B \cup C &amp;\implies x \notin B \land x \notin C \\
+          &amp;\implies x \in B^c \land x \in C^c \\
+          &amp;\implies x \in B^c \cap C^c
+        </align>
+
+        Thus, ` (B \cup C)^c \subset (B^c \cap C^c) `
       </p>
-	  
-      <mchoice display_name="Are you taking notes?">
-        <stmt>Please select the definition of `A \cap B`</stmt>
-        <mchoice-group>
-          <t> ` \{x\mid x\in A \land x\in B\}.`</t>
-          <f> ` \{x\in A \mid x\notin B\}.`</f>
-          <f> ` \{x\mid x\in A \lor x\in B\}.`</f>
-        </mchoice-group>
-      </mchoice>
 
+      <p>For the second inclusion, we want to show that ` (B^c \cap C^c) \subset ( B \cup C )^c `. </p>
       
-      <mchoice display_name="almost caught you slacking!">
-        <stmt> Please select the definition of `A \cup B` </stmt>
-        <mchoice-group>
-          <f> `\{x \in A \mid x\notin B\}.` </f>
-          <f> `\{x \mid x \in A \land x\in B\}.` </f>
-          <t> `\{x \mid x \in A \lor x\in B\}.` </t>
-        </mchoice-group>
-      </mchoice>
+      <p>
+        let `x \in B^c \cap C^c `, then:
 
+        <align>
+          x \in B^c \land c \in C^c &amp;\implies x \notin B \land x \notin C \\
+          &amp;\implies x \notin (B \cup C) \\
+          &amp;\implies x \in (B \cup C)^c \\
+        </align>
 
-      <mchoice display_name="ok, last one">
-        <stmt> Please select the definition of `A \setminus B` </stmt>
-        <mchoice-group>
-          <f> ` \{x \mid x \in  A \land  x\in B\}. ` </f>
-          <f> ` \{x \mid x \in  A \lor   x\in B\}. ` </f>
-          <t> ` \{x \in A  \mid x \notin B     \}. ` </t>
-        </mchoice-group>
-      </mchoice>
+        Thus, ` B^c \cap C^c \subset (B \cup C)^c `.
 
-    </page>
+        <hr/>
+        So having proved both inclusions,
+
+        \[ ( B \cup C )^c = B^c \cap C^c \quad \]
+      </p>
+    </proof>
+  </page>
   
-    <page title="De Morgan's Laws">
-      <vid1 desc="De Morgan's Laws" start="00:20:55" end="00:28:24" />
+  <page title="Induction">
+    <vid1 desc="De Morgan's first law" start="00:36:15" end="00:54:52" />
 
-      <theorem desc="De Morgan's Laws">
-        <p>If `A,B,C` are sets then</p>
+  </page>
+
+  <page title="Using Induction">
+    <vid1 desc="Using induction" start="00:54:52" end="00:59:13" />
+    
+    <p>
+      How is induction used in practice? When we want to prove some
+      statement,
+      
+      \[ \forall n \in \mathbb{N}, \quad P(n)\ \text{is true}. \]
+      
+      Induction requires two smaller proofs:
+    </p>
+    
+    <div> step 1) Prove the <term>base case:</term> </div>
+    <center>` P(1) \quad `  (usually easy) </center>
+    <br/>
+    <div> step 2) Prove the <term>inductive step</term>: </div>
+    <center>  ` P(m) \implies P(m + 1) ` </center>
+    <p> Time for an example! </p>
+    
+    <vid1 desc="Using induction (base case)" start="00:59:10" end="01:01:25" />
+    
+    <theorem desc="">
+      Let ` P(n) ` be the proposition:
+      for all ` c \ne 1 `, ` \forall n \in \mathbb{N} `,
+      \[ 1 + c^1 + c^2 + \cdot\cdot\cdot + c^n = \frac{1 - c^{n+1}}{1 - c} \]
+    </theorem>
+
+    <hr/>
+    
+    <proof desc="base case: ` P(1) `">
+      The base case, `P(1)` is,
+      
+        \[ 1 + c^1 = \frac{1 - c^{1+1}}{1 - c} \]
+      
+        Since,
+      
+        \[ \frac{1-c^2}{1-c} = \frac{(1-c)(1+c)}{1-c} = 1+c \]
+    </proof>
+
+    <hr/>
+    <vid1 desc="Using induction (inductive step)" start="01:01:25" end="01:05:41" />
+    
+    <proof desc="inductive step: ` P(n) \implies P(n+1) `">
+      TODO
+    </proof>
+  </page>
+
+  <page title="Another induction example">
+    <vid1 desc="Second induction example (base case)" start="1:06:50" end="1:08:41" />
+
+    <p>Let the proposition, `P(n)` be defined as `(1+c)^n \ge 1 + nc.`</p>
+    
+    <theorem desc="">
+      `\forall n \in \mathbb{N}`, `c \ge -1` : `P(n)` is true 
+    </theorem>
+
+    <proof desc="base case, `P(1)`">
+      <p>
+        1) Prove the base case `P(1)`.<br/>
+        2) Prove inductive step `P(m) \implies P(m+1)`.
+      </p>
+
+      <hr/>
+      
+      <p>
+        Prove the base case,<br/><br/>
+        If `c \ge -1`, then `P(1)` is true. 
+
+        We rewrite ` P(1) ` with the definition of ` P ` to get,
+        
+        \[ (1+c)^1 \ge 1 + 1 \cdot c \]
+        
+        Then simplify,
+        
+        \[ 1 + c = 1 + c \]
+        
+      </p>
+    </proof>
+    
+    <p>The base case is proven. Onto the inductive step!</p>
+    
+    <vid1 desc="Second induction example (inductive step)" start="01:08:41" end="01:20:41" />
+
+    <proof desc="inductive step: `\quad P(m) \implies P(m+1)`">
+      <p>
+        We've proven the base case `P(1)`. Next the goal is to prove that `P(m)
+        \implies P(m+1)` so we can construct a chain of implications
         
         <align>
-          (B\cup C)^c &amp;= B^c \cap C^c \\
-          (B\cap C)^c &amp;= B^c \cup C^c \\
-          A \setminus (B \cup C) &amp;= (A\setminus B) \cap (A\setminus C) \\ 
-          A \setminus (B \cap C) &amp;= (A\setminus B) \cup (A\setminus C) \\
-        </align>
-      </theorem>
+          P(1)
+          &amp;\implies P(2) \\
+          &amp;\implies P(3) \\
+          &amp;\implies \vdots \\
+          &amp;\implies P(n-1) \\
+          &amp;\implies P(n) \\
+        </align> 
 
-      <html>
-        <center>
-          <img src="/static/images_demorgans-law-1.png" alt="demorgan's law" />
-        </center>
-      </html>
-
-    </page>
-
-    <page title="Proof: De Morgan's first law">
-      <vid1 desc="De Morgan's first law" start="00:28:24" end="00:35:34" />
-
-      <mchoice display_name="Recall a definition">
-        <stmt>
-          Given two sets `T` and `U`, please select the definition of `T = U`
-        </stmt>
-        <mchoice-group>
-          <t> ` (T = U) := (T \subset U) \land (U \subset T) ` </t>
-          <f> ` (T = U) := (T \subset U) \lor (U \subset T) ` </f>
-          <f> ` (T = U) := (T \subset U) \subset (U \subset T) ` </f>
-          <f> ` (T = U) := (U \subset T) \subset (T \subset U) ` </f>
-        </mchoice-group>
-      </mchoice>
+      </p>
+      <hr/>
       
-      <proof desc="">
-        <p>
-          Let `B`, `C` be sets.  We are proving,
+      <p> Here is proof of the inductive step! 
 
-          \[ ( B \cup C )^c = (B^c \cap C^c) \]
+        \[ P(m) \implies P(m+1) \]
 
-          Start by rewriting the equality in terms of its definition,
-          
-          \[
-          (B \cup C)^c \subset ( B^c \cap C^c )
-          \quad \text{and} \quad
-          (B^c \cap C^c)^c \subset ( B \cup C )^c
-          \]
-        </p>
-
+        Unfold the definition of `P` to get:
         
-        <p>For the first inclusion, show that `(B \cup C)^c \subset ( B^c \cap C^c ) `. </p>
+        \[
+        \underbrace{(1 + c)^m \ge 1 + mc}_{P(m)} \implies
+        \underbrace{(1 + c)^{(m+1)} \ge 1 + (m+1)\cdot c}_{P(m+1)}
+        \]
+      </p>
 
-        <p>
-          let `x \in (B \cup C)^c `, then:
-
-          <align>
-            x \notin B \cup C &amp;\implies x \notin B \land x \notin C \\
-            &amp;\implies x \in B^c \land x \in C^c \\
-            &amp;\implies x \in B^c \cap C^c
-          </align>
-
-          Thus, ` (B \cup C)^c \subset (B^c \cap C^c) `
-        </p>
-
-        <p>For the second includes, we want to show that ` (B^c \cap C^c) \subset ( B \cup C )^c `. </p>
-        
-        <p>
-          let `x \in B^c \cap C^c `, then:
-
-          <align>
-            x \in B^c \land c \in C^c &amp;\implies x \notin B \land x \notin C \\
-            &amp;\implies x \notin (B \cup C) \\
-            &amp;\implies x \in (B \cup C)^c \\
-          </align>
-
-          Thus, ` B^c \cap C^c \subset (B \cup C)^c `.
-
-          <hr/>
-          So having proved both inclusions,
-
-          \[ ( B \cup C )^c = B^c \cap C^c \quad \square \]
-        </p>
-      </proof>
-    </page>
-    
-    <page title="Induction">
-      <vid1 desc="De Morgan's first law" start="00:36:15" end="00:54:52" />
-
-    </page>
-
-    <page title="Using Induction">
-      <vid1 desc="Using induction" start="00:54:52" end="00:59:13" />
-      
       <p>
-        How is induction used in practice? When we want to prove some
-        statement,
+        Next, setup a calc block starting with the left hand side of `P(m+1)`
+
+        <align>
+          (1+c)^{(m+1)}
+          &amp; = (1+c)(1+c)^m \\
+          &amp; \ge (1+c)(1 + mc) \tag{\( \star_1 \)}\\
+          &amp; = 1 + mc + c + mc^2 \\
+          &amp; = 1 + (m+1)c + mc^2 \\
+          &amp; \ge 1 + (m+1)c \tag{\( \star_2 \)},
+        </align>
+
+        <starbox>
+          <star n="1"> multiply both sides of the antecendent `P(m)` by `(1+c)`</star>
+          
+          <align>
+            (1 + c)^m &amp; \ge 1 + mc \\
+            \green{(1+c)}(1 + c)^m &amp; \ge \green{(1+c)}(1 + mc)
+          </align>
         
-        \[ \forall n \in \mathbb{N}, \quad P(n)\ \text{is true}. \]
-        
-        Induction requires two smaller proofs:
+          <star n="2">`mc^2` is non-negative, so dropping it supports the inequality.</star>
+        </starbox>
+
       </p>
       
-      <div class="two-col">
-        <div> step 1) </div>
-        <div> Prove the <blue>base case:</blue> </div>
-        <div> ` P(1) \quad `  (usually easy) </div>
-        
-        <div> step 2) </div>
-        <div> Prove <blue>inductive step: </blue> </div>
-        <div> More involved, need to prove ` P(m) \implies P(m + 1) ` </div>
-      </div>
-      <p> Time for an example! </p>
+      <p> `P(m + 1)` unfolds to the final right hand side of the chain, </p>
       
-      <vid1 desc="Using induction (base case)" start="00:59:10" end="01:01:25" />
-      
-      <theorem desc="">
-          Let ` P(n) ` be the proposition:
-          for all ` c \ne 1 `, ` \forall n \in \mathbb{N} `,
-          \[ 1 + c^1 + c^2 + \cdot\cdot\cdot + c^n = \frac{1 - c^{n+1}}{1 - c} \]
-      </theorem>
-      
-      <proof desc="base case: ` P(1) `">
-        When `n = 1`, the sum on
-        
-        \[ 1 + c^1 = \frac{1 - c^{1+1}}{1 - c} \]
-        
-        Since,
-        
-        \[ \frac{1-c^2}{1-c} = \frac{(1-c)(1+c)}{1-c} = 1+c \]
-        
-      </proof>
-      
-      <vid1 desc="Using induction (inductive step)" start="01:01:25" end="01:05:41" />
-    
-      <proof desc="inductive step: ` P(n) \implies P(n+1) `">
-        TODO
-      </proof>
-    </page>
+      \[ (1+c)^{m+1} \ge 1 + (m+1)c \]
 
-    <page title="Another induction example">
-      <vid1 desc="Second induction example (base case)" start="01:06:50" end="01:08:41" />
+    </proof>
 
-      <theorem desc="">
-        <p> For this proposition:</p>
-        
-        \[ P(n) := (1+c)^n \ge 1 + nc. \]
+    <hr/>
 
-        <p> Let's prove the following theorem, </p>
-        
-        <center>If ` c \ge -1 `, then ` P(n) ` is true ` \forall n \in \mathbb{N}. `</center>
-
-      </theorem>
-
-      <proof desc="base case, `P(1)`">
-        <p> Check ` P(1) `: if ` c \ge -1 `, then ` P(1) ` is true. </p>
-        <p>
-          We rewrite ` P(1) ` with the definition of ` P ` to get,
-          
-          \[ (1+c)^1 \ge 1 + 1 \cdot c \]
-          
-          Then evaluate with the exponential and multiplicative identities to find,
-          
-          \[ 1 + c = 1 + c \]
-          
-          which is true by the reflexive property of equality, therefore
-          the base case is proven. Onto the inductive step!
-        </p>
-      </proof>
-      
-      <vid1 desc="Second induction example (inductive step)" start="01:08:41" end="01:20:41" />
-
-      <proof desc="inductive step: `\quad P(m) \implies P(m+1)`">
-        <p>
-          We've proven the base case `P(1)`. Next the goal is to prove that `P(m)
-          \implies P(m+1)` so we can construct a chain of implications
-          
-          <align>
-            P(1) &amp;\implies P(2) \\
-            &amp;\implies P(3) \\
-            &amp;\implies \vdots \\
-            &amp;\implies P(n-1) \\
-            &amp;\implies P(n) \\
-          </align> 
-
-        </p>
-        <hr/>
-        
-        <p>
-          Here we go!
-
-          \[ P(m) \implies P(m+1) \]
-
-          Rewrite `P` to get:
-          
-          \[ (1 + c)^m \ge 1 + mc \implies (1 + c)^{(m+1)} \ge 1 + (m+1)\cdot c \]
-
-          We have,
-
-          <align>
-            (1+c)^{m+1} &amp;= (1+c)(1+c)^m \\
-            &amp;\ge (1+c)(1 + mc) \tag{\( \star_1 \)}\\
-            &amp;= 1 + mc + c + mc^2 \\
-            &amp;= 1 + (m+1)c + mc^2 \\
-            &amp;\ge 1 + (m+1)c \tag{\( \star_2 \)},
-          </align>
-
-          <star n="1"> multiply both sides of the antecendent `P(m)` by `(1+c)`</star>
-          <star n="2">`mc^2` is non-negative, so dropping it supports the inequality.</star>
-        </p>
-        
-        <p> `P(m + 1)` unfolds to the final right hand side of the chain, </p>
-        
-        \[ (1+c)^{m+1} \ge 1 + (m+1)c \]
-
-      </proof>
+    <div>
+      <center><h2><i> eh.. </i></h2></center>
+      <p> It would be good to pause here for a moment to clear up any
+        lingering doubts about the integrity of this argument. </p>
       
       <p>
-        
-        <hr/>
+        We can assume the left side `P(m)` because the base case is
+        already proved. That is part of the trick and it might seem
+        like something is missing, but consider that once the base
+        case `P(1)` is proved, then `P(2)` is true since `P(1)
+        \implies P(2)` is true. And - that is true because `P(m)
+        \implies P(m+1)` is true for all `m`, including `m=1`.
+      </p>
+      
+      <p> The induction step gives us a proof of `P` for any `m+1`, as
+        long as `P` is proved for `m`. But what if `P` not proved for
+        `m`? Aha! In that case, ensure `P` is proved for `m-1`, and so
+        on, following the chain back to the base case, which will need
+        to be proved somehow.
+      </p>
 
+      <p>
+        If you'd like to see more examples, please check out this
+        lecture from 6.042.
+        
+        <vid desc="6.042 induction" youtubeid="z8HKWUWS-lA" start="00:19:54" end="01:19:15" />
+      </p>
+    </div>
+
+    
+    <!-- <inline-html filename="media/html/inkproofs/theorem-1-1-12/theorem-1-1-12.html"/> -->
+    
+    <div>
+      Here is a way to do it in Lean. Please note that since natural
+      numbers in Lean start with zero, occurences of `P(n)` in
+      following lean proof have been changed to `P(n+1)` to match the
+      semantics of the proof given above.
+    </div>
+    
+    <br/>
+    
+    <inkproof theorem="theorem-1-1-12"/>
+
+    <hr/>
+
+    <ignore>
+      
+      <p>
         Let's take a look at the logic underpinning the overall
         reasoning here, in four steps to determine the truth of the
         implication.
       </p>
       <p>
-        <blue> Step 1 </blue>: Establish the implication
+        <term> Step 1 </term>: Establish the implication
         
         \[ P(m) \implies P(m+1) \]
 
-        <blue> Step 2 </blue>: Assume `P(m)` because it will be rooted
+        <term> Step 2 </term>: Assume `P(m)` because it will be rooted
         in the base case.
         
         \[ \text{True} \implies P(m+1) \]
 
-        <blue> Step 3 </blue>: The inductive step shows that no matter
+        <term> Step 3 </term>: The inductive step shows that no matter
         which `P(m)` is true, the next, `P(m+1)` is also true. So,
         since the base case `P(1)` is proven to be true, the inductive
         step is used to assert `P(2)`.
       </p>
+      
       <p>
         Next, since `P(2)` is now proven to be true as well, the
         inductive step is used again to assert `P(3)`, and so on,
@@ -491,7 +610,7 @@
         
         \[ \text{True} \implies \text{True} \]
 
-        <blue> step 4 </blue>: From formal logic, the truth table:
+        <term> step 4 </term>: From formal logic, the truth table:
 
         <center>
           <table style="width:25%; text-align: center">
@@ -506,18 +625,19 @@
         \[ \underbrace{ \text{True} \implies \text{True} }_{\text{entire implication evaluates to True}}  \]
 
         <align>
-        P(1) \implies P(2) \implies P(2) \implies \cdots \implies P(n-1) &amp;\implies P(n) \\
-        \text{True} \implies P(2) \implies P(3) \implies \cdots \implies P(n-1) &amp;\implies P(n)  \\
-        \text{True} \implies P(3) \implies \cdots \implies P(n-1) &amp;\implies P(n) \\
-        \text{True} \implies \cdots \implies P(n-1) &amp;\implies P(n) \\
-        \text{True} \implies P(n-1) &amp;\implies P(n) \\
-        \text{True} &amp;\implies P(n) \\
-        &amp; \text{True} \\
+          P(1) \implies P(2) \implies P(2) \implies \cdots \implies P(n-1) &amp;\implies P(n) \\
+          \text{True} \implies P(2) \implies P(3) \implies \cdots \implies P(n-1) &amp;\implies P(n)  \\
+          \text{True} \implies P(3) \implies \cdots \implies P(n-1) &amp;\implies P(n) \\
+          \text{True} \implies \cdots \implies P(n-1) &amp;\implies P(n) \\
+          \text{True} \implies P(n-1) &amp;\implies P(n) \\
+          \text{True} &amp;\implies P(n) \\
+          &amp; \text{True} \\
         </align>
         
         By induction, `\forall n, P(n)` holds `\quad \square`
-        
       </p>
-    </page>
-  </lecture>
-</div>
+
+    </ignore>
+    
+  </page>
+</lecture>

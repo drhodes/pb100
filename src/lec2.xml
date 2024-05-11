@@ -1,6 +1,6 @@
 <div>
   <lecture title="Lecture 2: Cantor's Theory of Cardinality">
-    <page title="When do two sets have the same size?">
+    <page title="Set size">
       <vid2 desc="" start="00:00:00" end="00:04:48" />
 
       <p> <blue>Q:</blue> When do two sets `A` and `B` have the same size? </p>
@@ -30,7 +30,7 @@
       <vid2 desc="" start="00:04:48" end="00:11:50" />
 
       <definition desc="function">
-	    If `A` and `B` are sets, then a <u>function</u> `f:A \to B` is
+	    If `A` and `B` are sets, then a <term>function</term> `f:A \to B` is
 	    a mapping that assigns to each `x \in A` a unique element `f(x) \in B`.
       </definition>
       
@@ -42,7 +42,7 @@
       
       <definition desc="direct image">
 
-        Let `f: A \to B`, if `C \subset A`, we define the <u>direct image</u> `f(C)`
+        Let `f: A \to B`, if `C \subset A`, we define the <term>direct image</term> `f(C)`
 
           <align>
 			f(C)
@@ -60,7 +60,7 @@
 
       <hr/>      
 
-      <center> <img src="/media/images/function-image-inv-image.svg"/> </center>
+      <fig fname="unit1/function-image-inv-image.svg" text="asdfasdf"/>
       
       <p>
         Given the sets `A` and `B` illustrated above, let's see how
@@ -94,19 +94,74 @@
         \[ x_1 \ne x_2 \implies f(x_1) \ne f(x_2). \]
       </definition>
       
+      <fig text="injective but not surjective" fname="unit1/inj-but-not-surj.png"/>
+      
+      <hr/>
+     
       <definition>
         if f(A) = B then `f` is <term>surjective</term> or
         <term>onto</term>. Equivalently,
 
         \[ \forall y \in B,\ \exists x \in A,\ f(x)=y. \]
       </definition>
+
+      <fig text="surjective but not injective" fname="unit1/surj-but-not-inj.png"/>
+      
+      <hr/>
+      
+      <definition>
+        `f` is <term> bijective </term> if it is injective and
+        surjective.
+      </definition>
+      
+      <fig text="bijective" fname="unit1/bij.png"/>
+      
     </page>
 
     <page title="Composition">
       <vid2 desc="" start="00:17:53" end="00:20:37" />
 
-      dfn
-      "g after f"
+      <definition>        
+        If `f: A \to B`, `g: B \to C`,
+        <p>
+          \[ g \circ f: A \to C \]
+
+          and 
+          \[ g \circ f := (g \circ f)(x) = g(f(x)). \]
+        </p>
+      </definition>
+
+      <definition>
+          
+        "When `f: A \to B` is a bijection, then the inverse image of a
+        single element, `f^{-1}(\{y\})`, is always a unique element of
+        `A`. We then consider `f^{-1}` as function `f^{-1}: B \to A`
+        and write simply `f^{-1}(y)`. In this case, we call `f^{-1}`
+        the <term> inverse function </term> of `f`."
+
+        
+        <lebl page="16"/>
+        
+      </definition>
+
+      <warning>
+        There are <b>two distinct inverses</b> that can be distinguished by
+        this notation.
+        
+        <br/><br/>
+
+        When `f^{-1}` is applied to a set, then `f^{-1}` is the <term>inverse image</term> of `A`.
+        
+        \[  f^{-1}(A)  \tag{example}\]
+
+        <p> When `f^{-1}` is applied to a number, then `f^{-1}` is the <term>inverse function</term></p>
+
+        \[  f^{-1}(x)  \tag{example}\]
+        
+      </warning>
+      
+      
+      
     </page>
 
     <page title="Cardinality">
@@ -144,15 +199,15 @@
       </p>
       
       <definition>
-	    If `|A| = \mathbb{N}` then `A` is <u>countably infinite</u>.
+	    If `|A| = \mathbb{N}` then `A` is <term>countably infinite</term>.
       </definition>
 
       <definition>
-        If `A` is finite or countably infinite we say `A` is <u>countable</u>.
+        If `A` is finite or countably infinite we say `A` is <term>countable</term>.
       </definition>
 
       <definition>
-        If `A` is not countable, then it is <u>uncountable</u>.
+        If `A` is not countable, then it is <term>uncountable</term>.
       </definition>
 
       <hr/>
@@ -175,6 +230,8 @@
 
       <hr/>
 
+      <!-- reference the MOP -->
+      
       <theorem> if `|A|` = `|B|` then `|B|` = `|A|` </theorem>
       <proof>
         Suppose `|A| = |B|`, then there exists a bijective function `f: A \to B`.
@@ -186,16 +243,46 @@
       
       <theorem> if `|A| = |B|` and `|B| = |C|` then `|A| = |C|` </theorem>
         
-      <proof>
-        <span>Suppose `|A| = |B|` and `|B| = |C|`. Then there are bijections `f: A \to B` and `g: B \to C`</span>
-      </proof>
-      
       <vid2 desc="" start="00:35:50" end="00:35:51" />
-
-      We need to be able to find a bijection
-      
       <proof>
-        asdf
+        
+        <span>Suppose `|A| = |B|` and `|B| = |C|`. Then there are bijections `f: A \to B` and `g: B \to C`</span>
+        
+        <div>We need to find a bijective function from `|\{ 2n : n \in \mathbb{N} \}|` to `|\mathbb{N}|`.</div>
+        
+        <br/>
+
+        <span> let `h: A \to C` be a function `h(x) = (g \circ f) (x)` </span>
+
+        <br/><br/>
+
+        We want to prove that `h` is a bijection.<br/><br/>
+
+        
+        <blue>Step 1)</blue> We first show `h` is one-to-one, which means that if `h(x_1) = h(x_2)`  then `x_1 = x_2`.
+
+        <div>
+          \[ g(f(x_1)) = g(f(x_2)) \]
+
+          since `g` is one-to-one then
+          \[ f(x_1) = f(x_2), \]
+
+          and since `f` is one-to-one then
+          \[ x_1 = x_2`. \]
+
+          thus `h` is one-to-one.
+        </div>
+        <br/>
+
+        <blue>Step 2)</blue>
+        
+        <div>
+          Now we prove `h(A) = C: \forall z \in C, \exists x \in A, h(x)=z`.<br/>
+
+          Let `z \in C`, Since `g` is surjective, `\exists y \in B, g(y) = z`.<br/>
+          
+          So `f` is surjective, `\exists x \in A`, `f(x)=y`, then `h(x) = g(f(x)) = g(y)= z`
+        </div>
       </proof>
       
     </page>
