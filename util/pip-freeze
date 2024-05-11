@@ -1,0 +1,28 @@
+alectryon @ git+https://github.com/cpitclaudel/alectryon.git@41a13993f5fd20f0310e10577d3b89cd8f00d48d
+-e git+ssh://git@github.com/drhodes/auxml.git@8316decef9f1b67e559911f54cb23e33439c23f5#egg=auxml
+beautifulsoup4==4.12.3
+docutils==0.21.1
+dominate==2.9.1
+exceptiongroup==1.2.0
+iniconfig==2.0.0
+jedi==0.19.1
+livereload==2.6.3
+lxml==5.2.1
+packaging==24.0
+parso==0.8.4
+pkg_resources==0.0.0
+pluggy==1.4.0
+pudb==2024.1
+Pygments==2.17.2
+pytest==8.1.1
+pytest-watcher==0.4.2
+six==1.16.0
+soupsieve==2.5
+tomli==2.0.1
+tornado==6.4
+typing_extensions==4.11.0
+urwid==2.6.10
+urwid_readline==0.14
+watchdog==4.0.0
+wcwidth==0.2.13
+xmldiff==2.6.3
