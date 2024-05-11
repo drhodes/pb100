@@ -26,8 +26,6 @@ function timeToSeconds(timeString) {
 
 // vid_helper("[[this]]", "[[youtubeid]]", "[[start]]", "[[end]]");
 function vid_helper(elid, youtubeid, start, end) {
-  asdfasdf
-  
   mydiv = document.getElementById(elid);
   console.log("mydiv has element id: " + elid);
   myframe = mydiv.querySelector("iframe");
@@ -45,8 +43,8 @@ function vid_helper(elid, youtubeid, start, end) {
     `&end=` + et,
   ].join("");
 
-  // 
-  // myframe.src=u
+  console.log(u)
+  myframe.src=u
   
 }
 
@@ -76,10 +74,58 @@ function youtubeSeekTo(iframeId, startTime) {
 var _unit = 1;
 var _seq = 1;
 var _page = 1;
-var _def = 1;
+var _def = 0;
+var _prob = 0;
 
 function cur_def() {
   _def += 1;
-  return ""+ _page + "." +_def + ".";
+  return ""+ _unit + "." + _seq + "." +_def + ".";
 }
 
+function cur_prob() {
+  _prob += 1;
+  return ""+ _unit + "." + _seq + "." +_prob + ".";
+}
+
+
+// https://stackoverflow.com/a/819455/98770
+function resizeIFrameToFitContent( iFrame, call_depth) {
+  let h = iFrame.contentWindow.document.body.scrollHeight;
+  
+  if (h < 100) {
+    setTimeout(function() {
+      resizeIFrameToFitContent(iFrame, call_depth);
+    }, 1000);
+  } else {
+    iFrame.height = iFrame.contentWindow.document.body.scrollHeight + 400;
+  }
+}
+
+function addProofIframeListener(frameId) {
+  window.addEventListener('DOMContentLoaded', function(e) {
+    var iFrame = document.getElementById(frameId );
+    resizeIFrameToFitContent( iFrame, 0);
+  } );
+}
+
+
+
+function sidebar_section_links() {
+  window.addEventListener('DOMContentLoaded', function(e) {  
+    let pages = document.getElementsByClassName("page");    
+    let section = document.getElementById("sidebar-sections");
+    console.log(section)
+    for (let page of pages) {
+      let div = document.createElement("div");
+      let title = page.getAttribute("title");
+      let link = document.createElement("a");
+      link.class = "sidebar-section-link";
+      link.href = "#" + page.id;
+      link.textContent = " " + page.title;
+
+      div.appendChild(link);
+      section.appendChild(div);
+      console.log(link);
+    }
+  });
+}
