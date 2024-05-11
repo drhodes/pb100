@@ -15,6 +15,8 @@ venv: util/requirements.txt ## establish a virtual environment for python
 	${PY} -m pip install -r util/requirements.txt
 	touch venv 
 
+
+
 # -----------------------------------------------------------------------------
 # Section: Lectures
 
@@ -25,6 +27,21 @@ LECTURE_BUILD_DIR=${BUILD}/lectures
 
 ${LECTURE_BUILD_DIR}:
 	$(shell mkdir -p ${BUILD}/lectures)
+
+
+.PHONY: about
+about: ${BUILD}/lectures/about.html
+${BUILD}/lectures/about.html: venv ./src/about.html ${MACROS} ${LECTURE_BUILD_DIR}
+	${VENV} auxml singlefile \
+	--macros ./src/macros.xml \
+	--infile ./src/about.html \
+	--outfile ${BUILD}/lectures/about.html
+
+	# ---------------------------------
+	echo "<!DOCTYPE html>" > /tmp/foo
+	cat /tmp/foo ${BUILD}/lectures/about.html > /tmp/foo2
+	mv /tmp/foo2 ${BUILD}/lectures/about.html
+
 
 .PHONY: lec1
 lec1: ${BUILD}/lectures/lec1.html
@@ -53,13 +70,43 @@ ${BUILD}/lectures/lec2.html: venv ./src/lec2.xml ${MACROS} ${LECTURE_BUILD_DIR}
 	cat /tmp/foo ${BUILD}/lectures/lec2.html > /tmp/foo2
 	mv /tmp/foo2 ${BUILD}/lectures/lec2.html
 
-.PHONY: lectures
-lectures: lec1 lec2 media
+
+BUILD_INK = ${BUILD}/inkproofs/
+
+${BUILD_INK}/theorem-1-1-12/theorem-1-1-12.html: src/pb100/Pb100/theorem-1-1-12.lean
+	$(shell mkdir -p ${BUILD_INK}/theorem-1-1-12)
+	${VENV} alectryon \
+	src/pb100/Pb100/theorem-1-1-12.lean \
+	--lake src/pb100/lakefile.lean \
+	--no-header \
+	--output-directory ${BUILD_INK}/theorem-1-1-12
+
+
+.PHONY: inks
+inks: ${BUILD_INK}/theorem-1-1-12/theorem-1-1-12.html
+
+.PHONY: lectures 
+lectures: inks about lec1 lec2 media 
 
 .PHONY: media
 media: ${BUILD}/media
-${BUILD}/media: media/css/* media/js/*
+${BUILD}/media: media/css/* media/js/* media/html/*
 	cp -av media ${BUILD}
+
+
+
+
+# -----------------------------------------------------------------------------
+# Section: Deploy
+
+.PHONY: deploy
+deploy: lectures
+	rsync -ravP ${BUILD} derek@proofbased.org:~/
+
+
+
+
+
 
 
 .PHONY: serve
@@ -78,3 +125,10 @@ clean-build:
 clean-venv: 
 	rm -rf venv
 
+
+.PHONY: clean-ink
+clean-ink: 
+	trash ${BUILD_INK}
+
+.PHONY: clean-all
+clean-all: clean-python clean-build clean-ink
