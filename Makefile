@@ -64,29 +64,50 @@ ${BUILD}/lectures/lec2.html: venv ./src/lec2.xml ${MACROS} ${LECTURE_BUILD_DIR}
 
 	sed -i '1s/^/<!DOCTYPE html>\n/' ${BUILD}/lectures/lec2.html
 
+.PHONY: lec3
+lec3: ${BUILD}/lectures/lec3.html
+${BUILD}/lectures/lec3.html: venv ./src/lec3.xml ${MACROS} ${LECTURE_BUILD_DIR}
+	${VENV} auxml singlefile \
+	--macros ./src/macros.xml \
+	--infile ./src/lec3.xml \
+	--outfile ${BUILD}/lectures/lec3.html
 
-BUILD_INK = ${BUILD}/inkproofs/
+	sed -i '1s/^/<!DOCTYPE html>\n/' ${BUILD}/lectures/lec3.html
 
-${BUILD_INK}/theorem-1-1-12/theorem-1-1-12.html: src/pb100/Pb100/theorem-1-1-12.lean
-	$(shell mkdir -p ${BUILD_INK}/theorem-1-1-12)
-	${VENV} alectryon \
-	src/pb100/Pb100/theorem-1-1-12.lean \
-	--lake src/pb100/lakefile.lean \
-	--no-header \
-	--output-directory ${BUILD_INK}/theorem-1-1-12
+.PHONY: lec4
+lec4: ${BUILD}/lectures/lec4.html
+${BUILD}/lectures/lec4.html: venv ./src/lec4.xml ${MACROS} ${LECTURE_BUILD_DIR}
+	${VENV} auxml singlefile \
+	--macros ./src/macros.xml \
+	--infile ./src/lec4.xml \
+	--outfile ${BUILD}/lectures/lec4.html
 
+	sed -i '1s/^/<!DOCTYPE html>\n/' ${BUILD}/lectures/lec4.html
 
-.PHONY: inks
-inks: ${BUILD_INK}/theorem-1-1-12/theorem-1-1-12.html
 
 .PHONY: lectures 
-lectures: inks about lec1 lec2 media 
+lectures: venv about lec1 lec2 lec3 lec4 media 
 
 .PHONY: media
 media: ${BUILD}/media
-${BUILD}/media: media/css/* media/js/* media/html/*
+${BUILD}/media: media/css/* media/js/* 
 	cp -av media ${BUILD}
 
+
+# THEOREMS:=src/pb100/Pb100/
+# ${THEOREM}/*.lean: venv
+# 	echo '$%'
+# 	echo pygmentize -f html -l lean -o test.html theorem-1-1-12.lean
+
+
+THEOREMS_LEAN := $(wildcard src/pb100/Pb100/theorem-*.lean)
+THEOREMS_HTML = $(pathsubst %.lean, %.html, $(THEOREMS_LEAN))
+THEOREMS_HTML_DIR=media/html/theorems
+.PHONY: asdf
+asdf: ${THEOREMS_LEAN}
+	echo $^
+	echo ${THEOREMS_HTML_DIR}
+	echo ${THEOREMS_HTML}
 
 
 
@@ -94,14 +115,8 @@ ${BUILD}/media: media/css/* media/js/* media/html/*
 # Section: Deploy
 
 .PHONY: deploy
-deploy: lectures
+deploy: venv lectures
 	rsync -ravP ${BUILD} derek@proofbased.org:~/
-
-
-
-
-
-
 
 .PHONY: serve
 serve: 
@@ -119,10 +134,5 @@ clean-build:
 clean-venv: 
 	rm -rf venv
 
-
-.PHONY: clean-ink
-clean-ink: 
-	trash ${BUILD_INK}
-
 .PHONY: clean-all
-clean-all: clean-python clean-build clean-ink
+clean-all: clean-python clean-build 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <macros>
+  
   <define-macro name="lecture" vars="title">
     <html lang="en">
       <head>
@@ -62,6 +63,8 @@
       </div>
     </div>
   </define-macro>
+
+  <define-macro name="pygment-proof"></define-macro>
   
   <define-macro name="sidebar">
     <div class="sidebar">
@@ -76,27 +79,34 @@
   <define-macro name="logo">
     <div class="logo">
       <center><img src="../media/images/peanut-butter-toast.png" width="100px"/></center>
-      <center><div class="logo-title"> Real Analysis: pb100 </div></center>
+      <center><div class="logo-title"> Real Analysis </div></center>
       <hr/>
       <div id="sidebar-sections" class="sidebar-sections"></div>
       <hr/>
       <lecture-menu/>
     </div>
   </define-macro>
- 
+  
   
   <define-macro name="lecture-menu">
     <div class="lecture-menu">
       <div><a href="../lectures/about.html">About</a></div>
       <lecture1/>
       <lecture2/>
+      <lecture3/>
+      <lecture4/>	  
     </div>
   </define-macro>
 
   <define-macro name="lecture1"> <menu-lec n="1" title="L1: Sets and Induction"/> </define-macro>
   <define-macro name="lecture2"> <menu-lec n="2" title="L2: Cardinality"/> </define-macro>
+  <define-macro name="lecture3"> <menu-lec n="3" title="L3: Cantor's Theorem"/> </define-macro>
+  <define-macro name="lecture4"> <menu-lec n="4" title="L4: Characterizing ℝ "/> </define-macro>
   
-  <define-macro name="menu-lec" vars="n, title"> <div><a href="../lectures/lec[[n]].html"> [[title]] </a></div> </define-macro>
+  <define-macro name="menu-lec" vars="n, title">
+    <div><a href="../lectures/lec[[n]].html"> [[title]] </a></div>
+    
+  </define-macro>
   
   <define-macro name="to-lec" vars="url, title">
     <div><a href="../lectures/[[url]].html"> [[title]] </a></div>
@@ -116,16 +126,17 @@
     </div>
   </define-macro>
   
-  <define-macro name="vid" vars="desc, youtubeid, start, end">    
+  <define-macro name="vid" vars="desc, youtubeid, start, end">
+	<!-- https://news.ycombinator.com/item?id=40897205 -->
     <div id="[[this]]" class="vid">
-        <iframe id="iframe-[[this]]"
-                class="vidframe"
-                type="text/html"
-                src="about:blank"
-                loading="lazy"
-                frameborder="0" allow="fullscreen">
-        </iframe>
-        
+      <iframe id="iframe-[[this]]"
+              class="vidframe"
+              type="text/html"
+              src="about:blank"
+              loading="lazy"
+              frameborder="0" allow="fullscreen">
+      </iframe>
+      
       <div class="seek-text">
         lecture segment runs from
         <a href="asdf">[[start]] </a> to <a href="asdf">[[end]] </a>.
@@ -188,7 +199,7 @@
         <span id="[[this]]-span" class="problem-number"/>
       </div>
       <contents/>
-      
+
       <script>
         defspan = document.getElementById("[[this]]-span");
         defspan.textContent = cur_prob();
@@ -396,7 +407,7 @@
   </define-macro>
 
   <define-macro name="ref" vars="url">
-    <span class="ref"> <a href="[[url]]"> <contents/> </a> </span>
+    <span class="ref"> <a href="[[url]]"> ⮺ <contents/> </a> </span>
   </define-macro>
   
   <define-macro name="ref-logic-and-proof" vars="url, chapter">
@@ -405,6 +416,19 @@
     </div>
   </define-macro>
 
+  <define-macro name="ref-mil" vars="url, chapter">
+    <div>
+      <ref url="[[url]]"> <span> Mathematics in Lean, chapter [[chapter]] </span> </ref>
+    </div>
+  </define-macro>
+  
+  <define-macro name="ref-mop" vars="url, chapter">
+    <div>
+      <ref url="[[url]]"> <span> The Mechanics of Proof, chapter [[chapter]] </span> </ref>
+    </div>
+  </define-macro>
+
+  
   <define-macro name="fig" vars="text, fname">
     <div class="fig">
       <center><img src="../media/images/[[fname]]" width="75%"/></center>
@@ -421,6 +445,9 @@
     </div>
   </define-macro>
 
+
+
+  
   <define-macro name="warning">
     <div class="warning">
       <contents/>

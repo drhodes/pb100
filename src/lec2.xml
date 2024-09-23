@@ -1,5 +1,13 @@
 <div>
   <lecture title="Lecture 2: Cantor's Theory of Cardinality">
+	<page title="additional resources">
+	  Sina Hazratpour has a playlist introducing lean4. Here is a video on sets.
+      <br/>
+	  <a href="https://www.youtube.com/watch?v=Lji9_p6rkPc&amp;list=PLLSwxwJoqOFFXB1bEL643JIgQMI11bkih&amp;index=2">
+		Sets - Introduction to Proofs with Lean4 (Johns Hopkins)
+	  </a>
+	</page>
+	
     <page title="Set size">
       <vid2 desc="" start="00:00:00" end="00:04:48" />
 
@@ -15,8 +23,8 @@
         \[ \{ a, b ,c \} \quad \text{and} \quad \{1, 2, 3\} \]
 
         Each member of the first set can be paired off uniquely with
-        the second. Recall that in general, no two members of a set
-        are equal.
+        the second. Recall that in general, no two members of the same
+        set are equal.
         
         <align>
           a &amp;\to 1 \\
@@ -29,6 +37,13 @@
     <page title="Function Review">
       <vid2 desc="" start="00:04:48" end="00:11:50" />
 
+      <ignore>
+        -- apply_fun
+        https://github.com/haruhisa-enomoto/mathlib4-all-tactics/blob/main/all-tactics.md#apply_fun
+
+        ok! need a better biblio function.
+      </ignore>
+      
       <definition desc="function">
 	    If `A` and `B` are sets, then a <term>function</term> `f:A \to B` is
 	    a mapping that assigns to each `x \in A` a unique element `f(x) \in B`.
@@ -44,17 +59,17 @@
 
         Let `f: A \to B`, if `C \subset A`, we define the <term>direct image</term> `f(C)`
 
-          <align>
-			f(C)
-            &amp;:= \{\forall y \in B,\ \exists x \in C,\ y = f(x) \} \\
-			&amp;= \{ f(x) : x \in C \}.
-          </align>		  
+        <align>
+		  f(C)
+          &amp;:= \{\forall y \in B,\ \exists x \in C,\ y = f(x) \} \\
+		  &amp;= \{ f(x) : x \in C \}.
+        </align>		  
 
       </definition>
       
       <definition desc="inverse image">
         The <term>inverse image</term> of a subset `D \subset B` is, 
-          
+        
         \[ f^{-1}(D) := \{ x \in A : f(x) \in D \}. \]
       </definition>
 
@@ -67,15 +82,15 @@
         `f` maps some subsets from `A` to `B`.
         
         <align>
-        f(C) &amp;= \{ y \in B, \exists x \in C, y = f(x) \} \\
-        &amp;= \{ f(x) : x \in C \} \\
+          f(C) &amp;= \{ y \in B, \exists x \in C, y = f(x) \} \\
+          &amp;= \{ f(x) : x \in C \} \\
         </align>
 
         <align>
-        f(\{1, 2\}) &amp;= \{a\}  \\
-        f(\{1, 3\}) &amp;= \{a, c\} \\ 
-        f^{-1}(\{ a \}) &amp;= \{1, 2\} \\
-        f^{-1}(\{a,c,d \}) &amp;= \{1,2,3,4\}
+          f(\{1, 2\}) &amp;= \{a\}  \\
+          f(\{1, 3\}) &amp;= \{a, c\} \\ 
+          f^{-1}(\{ a \}) &amp;= \{1, 2\} \\
+          f^{-1}(\{a,c,d \}) &amp;= \{1,2,3,4\}
         </align>
       </p>
       
@@ -87,9 +102,9 @@
         let `f: A\to B`, where `f` is <term>injective</term> or
         one-to-one if
 
-        \[ f(x_1) = f(x_2) \implies x_1 = x_2. \]
+        \[ f(x_1) = f(x_2) \implies x_1 = x_2, \]
         
-        equivalently, the contrapositive
+        and equivalently, the <a href="./lec1.html#page-Anatomy%20of%20implication">contrapositive</a>
 
         \[ x_1 \ne x_2 \implies f(x_1) \ne f(x_2). \]
       </definition>
@@ -97,7 +112,7 @@
       <fig text="injective but not surjective" fname="unit1/inj-but-not-surj.png"/>
       
       <hr/>
-     
+      
       <definition>
         if f(A) = B then `f` is <term>surjective</term> or
         <term>onto</term>. Equivalently,
@@ -132,7 +147,7 @@
       </definition>
 
       <definition>
-          
+        
         "When `f: A \to B` is a bijection, then the inverse image of a
         single element, `f^{-1}(\{y\})`, is always a unique element of
         `A`. We then consider `f^{-1}` as function `f^{-1}: B \to A`
@@ -188,9 +203,16 @@
         by Cantor-Schroder-Bernstein
         <p> if `|A| \le |B|` and `|B| \le |A|` then `|A| = |B|`</p>
       </theorem>
+
+      <scribe>
+        <p> A proof of this is beyond the scope of this course, but you
+        can try to work it out if you'd like, please see this page:</p>
+
+        <ref-mil url="https://leanprover-community.github.io/mathematics_in_lean/C04_Sets_and_Functions.html#the-schroder-bernstein-theorem"
+                 chapter="4.3. The Schröder-Bernstein Theorem"/>
+      </scribe>
+      <br/>
       
-      <p> A proof of this is beyond the scope of this course, but does
-      follow the familiar notion of inequalities on numbers. </p>
       
       <vid2 desc="" start="00:30:26" end="00:35:51" />
       <p>
@@ -242,7 +264,7 @@
       <hr/>
       
       <theorem> if `|A| = |B|` and `|B| = |C|` then `|A| = |C|` </theorem>
-        
+      
       <vid2 desc="" start="00:35:50" end="00:35:51" />
       <proof>
         
@@ -284,7 +306,6 @@
           So `f` is surjective, `\exists x \in A`, `f(x)=y`, then `h(x) = g(f(x)) = g(y)= z`
         </div>
       </proof>
-      
     </page>
   </lecture>
 </div>

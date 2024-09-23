@@ -1,0 +1,67 @@
+<!-- -*- web -*- -->
+
+<!--
+     Important Notes!
+     `rw` does not see through ∀ or ∃, but `simp` does
+-->
+
+<lecture title="Tactics">
+    <page title="tactic roundup">
+        <div>
+            This section provides minimal contrived use cases of some
+            tactics given tactic to help you get a grip on how to use it.
+        </div>
+    </page>
+    
+    <page title="tactic: choice">
+        <!-- asdfasdf -->
+    </page>
+
+    <page title="tactic: interval_cases">
+        Deduce the value of a variable given hypotheses and update the
+        variables in the tactic state with the deduced value.
+
+        Before:
+        <pre>
+  c : ℕ
+ h1 : 1 < c
+ h2 : c < 3
+    ⊢ c = 2
+        </pre>
+        
+        <div> After: notice all the cs have been replaced. </div>
+        
+        <pre>
+  c : ℕ
+ h1 : 1 < 2
+ h2 : 2 < 3
+    ⊢ 2 = 2
+        </pre>
+        
+    </page>
+    
+</lecture>
+
+
+<tactic name="choose">
+  -- https://www.ma.imperial.ac.uk/~buzzard/xena/formalising-mathematics-2024/formalisingmathematics.pdf
+  -- Classical choose
+
+  
+
+  
+  #check Exists.intro 1
+
+  example : ∃ x : Nat, x > 0 :=
+  have h : 1 > 0 := Nat.zero_lt_succ 0
+  Exists.intro 1 h
+
+  example : ∃ y : ℕ, y > 0 := by
+  have h : 1 > 0 := Nat.zero_lt_succ 0
+  choose n hn using (xExists.intro (1:ℕ)) h 
+  use n
+
+  example : ∃ x : ℕ, x > 0 :=
+  have h : 1 > 0 := Nat.zero_lt_succ 0
+  Exists.intro 1 h
+</tactic>

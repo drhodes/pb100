@@ -10,36 +10,28 @@
         (it's more addictive than <a href="https://github.com/TwoFX/sudoku">sudoku</a> - really!)
       </li>      
     </ul>
+
+    <hr/>
+    <p> Examples of proofs found in industry today (todo: need more examples) </p>
     
-    <p> <bb>Industry needs proofs (<i>even if they think otherwise</i>)</bb>! </p>
-
-    <ul>
-      <li>
-        Financial investers who employ strategies that depend on
-        probability would like to know their calculations are
-        meaningful and accurate. This course will prepare you for
-        understanding metric spaces which serves as the modern
-        foundation of probability and statistics. (needs fact check)
-        <hr/>
-      </li>
-
-      <li>
-        Numerical analysis is used to make guarantees about the errors
-        that computers introduce into important calculations, such as
-        those guiding spacecraft to the moon, Mars, and beyond. Proofs
-        help scientists more reliably make discoveries.
-        <hr/>
-      </li>
-
-      <li>
-        Encryption is woven through every part of our online world to
+    <div>
+      <b> Finance </b> researchers who employ strategies that depend on
+      probability would like to know their calculations are
+      meaningful and accurate. This course will prepare you for
+      understanding metric spaces which serves as the modern
+      foundation of probability and statistics. Some examples:
+      <br/>
+      </div>
+      <a href="https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/676076/OASIcs.FMBC.2024.5.pdf?sequence=3&amp;isAllowed=y">Formalizing Automated Market Makers in the Lean 4 Theorem Prover</a>
+      <br/> <br/>
+      <div>
+        <b> Encryption </b> is woven through every part of our online world to
         ensure the security of customers, nations and personal
         communication. Without proofs from number theory, we could not
         trust software to keep our secrets safe.
-        <br/>
-      </li>
-    </ul>
+      </div>
 
+      
     <p>
       Proof assistants such as Lean verify our reasoning with
       unparalleled guarantees without relying on peer review. The
@@ -56,14 +48,15 @@
   <page title="Sets Intro">
     <div>
       This introduction to sets should be review of material covered
-      in the natural numbers game and The Mechanics of Proof.
+      in the <a href="https://proofbased.org/pb100/lectures/about.html#page-Prerequisites"> prereqs </a>. 
     </div>
     
-    <br></br>
+    <ref-mop url="https://hrmacbeth.github.io/math2001/09_Sets.html" chapter="9. Sets"/>
+
+    <p> For more info about sets, please see: </p>    
+    <ref-mil url="https://leanprover-community.github.io/mathematics_in_lean/C04_Sets_and_Functions.html#" chapter="4. Sets and Functions"/>
     
-	<ref-logic-and-proof
-      url="https://leanprover.github.io/logic_and_proof/sets_in_lean.html#"
-      chapter="12: Sets in Lean"/>
+    <br></br>
     
     <vid1 desc="Sets Intro" start="00:02:46" end="00:09:56" />
 	
@@ -114,9 +107,10 @@
     </a>
     </p>
     
-    <center><h1><term> You are a nuclear bomb technician. </term></h1></center>
+    <hr></hr>
+    <center><h2><term> Suppose you are a bomb technician. </term></h2></center>
     
-    <p> You are at a test site in Nevada, standing directly under an atomic bomb. </p>
+    <p> You are at a test site in Nevada, standing directly under a hydrogen bomb. </p>
     
     <center>
       <img src="/pb100/media/images/unit1/hydrogen-bomb-technician.png" width="75%"/>
@@ -125,26 +119,36 @@
     <p> Please consider the following:</p>
     
     <center-box>
-      <p>"If <bu> the bomb explodes </bu> then <bu>you will die instantly</bu>"</p>
+      "If <bu> the bomb explodes </bu> then <bu>you will die instantly</bu>"
     </center-box>
     
-    That statement is designed to be irrefutable and it has the form:
+    That statement is designed to be memorable, irrefutable and has
+    the form:
 
     \[ A \implies B \]
 
     <hr></hr>
-    <p> The <term>converse</term> of `A \implies B \quad` is `\quad B \implies A` </p>
+
+	<p>
+      One might ask about different forms of implication using the
+      same terms. Firstly, what about swapping the positions of `A`
+      and `B`? Let's see.
+    </p>
+	
+    <p>
+      The <term>converse</term> of `A \implies B \quad` is `\quad B \implies A`
+    </p>
     
     <center-box>
       "if <bu>you died instantly</bu> then <bu>the bomb exploded</bu>"
     </center-box>
 
-    <p> That's not necessarily true, suppose that you did die at the
-      test site.  Consider that the detonator is controlled by
+    <p> <i>Maybe.</i> But, that's not necessarily true. Suppose that you did die at the
+      test site.  Consider that the bomb's detonator is controlled by
       professionals who are not influenced by your health. Your death
       could have been a coincidence, you could have had a heart attack
       or a stroke. The point is, your death did not cause the bomb to
-      explode, which is what the <term>converse</term> is implying </p>
+      explode, which is what the <term>converse</term> is implying. </p>
     
     <hr></hr>
     <p>The <term> inverse </term> of `A \implies B \quad` is `\quad \neg A \implies \neg B`</p>
@@ -165,7 +169,7 @@
     The <term> contrapositive </term> of `A \implies B \quad` is `\quad \neg B \implies \neg A`
     
     <center-box>
-      "if <bu>you do not die instantly</bu> then <bu>the bomb did not explode</bu>"
+      "if <bu>you do <term>not</term> die instantly</bu> then <bu>the bomb did <term>not</term> explode</bu>"
     </center-box>
     
     <p> Is that necessarily true? YES! Since you're still standing
@@ -204,7 +208,7 @@
       from material with the convention that natural numbers start at
       1. In contrast, the Lean Mathlib has natural numbers that start
       at 0. This course will provide good practice with working
-      between the two, so please be aware of that.
+      between the two, so please be aware of the difference.
     </p>
     
     <ul>
@@ -576,10 +580,9 @@
     
     <br/>
     
-    <inkproof theorem="theorem-1-1-12"/>
+    <!-- <pygment-proof theorem="theorem-1-1-12"/>  -->
 
-    <hr/>
-
+    <hr/>                       
     <ignore>
       
       <p>

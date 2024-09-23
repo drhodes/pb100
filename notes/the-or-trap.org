@@ -1,0 +1,12 @@
+The or trap.
+
+
+your tactic state will look something like this:
+
+k : ℕ
+h1 : all_cats_are_black ∨ prime k
+h2 : k < 42 
+⊢  some_cat_are_blue ∨ some_cats_are_black
+
+Do not start by using `left` or `right`, that only makes things harder
+later on.  First start by using `cases` on `h1`.

@@ -294,3 +294,16 @@ iframe.vidframe {
     overflow: hidden; /* Hide any overflowing text */
     text-overflow: ellipsis; /* Show an ellipsis (...) for truncated text */    
 }
+
+
+.lecture-menu a {    
+    display: block;
+    font-size: .8em;
+    padding-bottom: 5px;    
+    text-decoration: none;
+    display: inline-block;
+    /* width: 150px; /\* Set your desired width *\/ */
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide any overflowing text */
+    text-overflow: ellipsis; /* Show an ellipsis (...) for truncated text */
+}
