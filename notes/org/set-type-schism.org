@@ -1,0 +1,38 @@
+The overall crux: Lots of math is based on sets, lean uses types. Sets
+are not types and types are not sets, but their shadows are
+entangled. So what's the problem?
+
+The irritation starts with injectivity, surjectivity and
+cardinality. I'm going to pick on Lebl's Basic analysis because that's
+the book I have. Talking about the definition of set image:
+
+\\[ Definition 0.3.13 Consider a function $f : A \to B$ ... \\]
+
+Ok, great. That's familiar - a function from type A to type B. Except,
+no, sorry. $A$ and $B$ are sets. No problem, then to translate, we
+have 
+
+\\[ f : Set A \to Set B \\]
+
+Right? No. because the definition has:
+
+\\[ f(C) := {f(x) \in B: c \in C} \\]
+
+As is plainly written, $f$ applies to the C, and also the elements of
+the set C. This notation is hazardous.
+
+A direct image of C, where C is a subset of A is a function of sets.
+
+
+
+
+
+Why? It doesn't matter, that notation really has to change. I'm going
+to
+
+
+
+Anyways, the horror continues. In the book, injections are defined in
+terms of sets, yet the definition of Injection in lean has nothing to
+do with sets at all, which is good, because the
+
