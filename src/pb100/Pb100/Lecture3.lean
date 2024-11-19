@@ -15,38 +15,52 @@ def bij (A: Set α) (B: Set β) (f: α→β) := inj A B f ∧ sur A B f
 
 def card_eq (A: Set α) (B: Set β) := ∃ f, bij A B f
 def card_le (A: Set α) (B: Set β) := ∃ f, inj A B f
-def card_lt (A: Set α) (B: Set β) := ∃ f, inj A B f ∧ ¬ bij A B f
+def card_lt (A: Set α) (B: Set β) := ∃ f, inj A B f ∧ ¬ card_eq A B
 
 open Set
 
-example : (powerset (∅:Set ℕ)) = {∅} := by
-  norm_num
-
 section cantor₁
 
--- is this really proving cantors theorem?
 theorem cantor (A: Set α) : card_lt A (powerset A) := by
   use (λ x => {x}) -- choose some f where f(x) = {x}
   constructor
-  · -- injective part
-    intro x _ y _ h
-    obtain ⟨_, _, h₃⟩ := h
+  · -- inj A (𝒫 A) fun x ↦ {x}
+    intro x hx y hy h
+    obtain ⟨_, _, h₁⟩ := h
     dsimp at *
     rw [←singleton_eq_singleton_iff]
-    exact h₃
-  · -- subjective part
-    unfold bij
-    push_neg
-    intro h
-    unfold sur
-    push_neg
-    -- ok need to pick a y.
-    unfold inj at h
-    use ∅ -- lucky guess!!
-    constructor
-    · norm_num
-    · intro x _ _
-      norm_num
+    exact h₁
+  · -- |A| ≠ |𝒫 A|
+    by_contra h
+    dsimp [card_eq] at h
+    obtain ⟨g, hg⟩ := h
+
+    let B := {x ∈ A | x ∉ g x}
+    have hb : B ∈ 𝒫 A := @mem_of_mem_diff α A (λ x => g x x)
+
+    obtain ⟨h₁, h₂⟩ := hg
+    rw [sur] at h₂
+
+    have hg : ∃ b ∈ A, g b = B := by
+      obtain ⟨x, ⟨hx₁, _, hx₂⟩⟩ := h₂ B hb
+      use x
+
+    obtain ⟨b, ⟨hb₁, hb₂⟩⟩ := hg
+
+    cases (Classical.em (b ∈ g b)) with
+    | inl h =>
+      · have hc := h
+        dsimp [B] at hb₂
+        rw [hb₂] at h
+        obtain ⟨_, hc₂⟩ := h
+        contradiction
+    | inr h =>
+      · have hc := h
+        dsimp [B] at hb₂
+        rw [hb₂] at h
+        simp at h
+        have := h hb₁
+        contradiction
 
 end cantor₁
 
@@ -424,6 +438,7 @@ lemma part₂ (x : ℚ) : IsLUB E x → 2 ≤ x^2 := by
   have : ¬ (0 < h) := by linarith
   contradiction
 
+
 -- https://ocw.mit.edu/courses/18-100a-real-analysis-fall-2020/mit18_100af20_lec32.pdf#page=4
 -- Prove that x^2 ≤ 2
 lemma part₃ (x : ℚ) : IsLUB E x → x^2 ≤ 2 := by
@@ -442,8 +457,8 @@ lemma part₃ (x : ℚ) : IsLUB E x → x^2 ≤ 2 := by
         _= x^2 - (x^2 - 2) + h^2 := by linarith
         _= x^2 - 2*x*h + h^2 := by sorry
         _= (x - h)^2 := by sorry
-
-
+    sorry
+  sorry
 
 -- https://youtu.be/nbENJ-Ce7Nc?t=3839
 -- if x = sup E then 1 ≤ x and x^2 = 2.
@@ -484,7 +499,7 @@ lemma two_is_ub : 2 ∈ upperBounds E := by
 example : ¬ ∃ x : ℚ, IsLUB E x := by
   by_contra h
   obtain ⟨x, hx⟩ := h
-
+  sorry
 
 
 
@@ -511,15 +526,194 @@ example : ¬ ∃ q:ℚ, IsLUB S q := by
   constructor
   · --
     intro a h₂
+    sorry
+  · sorry
 
-  ·
+
+
 
 end page24
 
 
 
+namespace q_no_lubp
+
+def lubp (S : Set α) [Preorder α] :=
+  ∀ E ⊆ S, ∃ b ∈ S, E ≠ ∅ ∧ BddAbove E ∧ IsLUB E b
+
+#check univ ℚ
+
+theorem not_lubp_rat : ¬ lubp {q | q : ℚ} := by
+  sorry
 
 
+-- need to know how to use min for this proof.
+example (a b : ℚ) (h₁ : a < b) (h₂ : x = min a b) : x = a := by
+  rw [h₂]
+  rw [min_eq_left_iff]
+  linarith
+
+def E := {q : ℚ | q^2 < 2}
+
+theorem cancel_lemma₁ (a b : ℚ) (h : a≠0) : (a/(a*b)) = (1/b) := by
+  exact div_mul_right b h
+
+example : ¬ ∃ x, x ∈ {q | univ ℚ} ∧ IsLUB E x := by
+  sorry
+
+lemma alg₁ (x q : ℚ) (h : x ≠ 0):
+  (x - (x ^ 2 - 2) / (2 * x) + q) = ((x ^ 2 + 2) / (2 * x) + q) := by
+    have h₁ : 2 * x ≠ 0 := by aesop
+    calc (x - (x ^ 2 - 2) / (2 * x) + q)
+      _= (x + (2 - x ^ 2) / (2 * x) + q) := by ring
+      _= (1 * x + (2 - x ^ 2) / (2 * x) + q) := by ring
+      _= (((2 * x) / (2 * x)) * x + (2 - x ^ 2) / (2 * x) + q) := by
+        rw [← div_self h₁]
+      _= (((2 * x^2) / (2 * x)) + (2 - x ^ 2) / (2 * x) + q) := by ring
+      _= ((2 * x^2 + 2 - x ^ 2) / (2 * x) + q) := by ring
+      _= ((x ^ 2 + 2) / (2 * x) + q) := by ring
+
+lemma rel₁ (a b : ℚ) {ha : 0 < a} {hab : 0 < a * b} : 0 < b := by
+  exact (pos_iff_pos_of_mul_pos hab).mp ha
+
+
+
+example (x q : ℚ) (hq₁ : q ∈ E) (hq₂ : 0 < q) :
+    IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
+  --
+  intro h₉
+  have con₁ := h₉
+  dsimp [IsLUB, IsLeast, upperBounds, lowerBounds] at h₉
+  obtain ⟨h₁, h₂⟩ := h₉
+  constructor
+  · -- 1 ≤ x
+    apply h₁
+    unfold E; norm_num
+  · -- ⊢ x ^ 2 = 2
+    rw [le_antisymm_iff]
+    constructor
+    · -- x^2 ≤ 2
+      have h₃ : ¬ 2 < x^2 := by
+        by_contra h₃
+        let H := (x ^ 2 - 2) / (2 * x)
+
+        have H₁ : 0 < H := by
+          dsimp [H]
+          have : 1 ≤ x := by
+            apply h₁
+            unfold E; norm_num
+          have hx : 0 < x := by linarith
+          rw [div_pos_iff_of_pos_right]
+          linarith
+          linarith
+        have H₂ : x - H < x := by linarith
+
+        have H₃ : upperBounds E (x - H) := by
+          simp [upperBounds, E]
+          intro b hb
+          have hx : x ≠ 0 := by aesop
+          have hx₂ : 2 * x ≠ 0 := by aesop
+          have hx₃ : 0 < x := by aesop
+          have h₄ :=
+            calc (x - H)^2
+              _= x^2 - 2*x*H + H^2 := by ring
+              _= x^2 - ((2*x) * (x ^ 2 - 2)) / (2 * x) + H^2 := by ring
+              _= x^2 - ((x^2 - 2) * (2 * x)) / (2 * x) + H^2 := by ring
+              _= x^2 - ((x^2 - 2) * ((2 * x) / (2 * x))) + H^2 := by ring
+              _= x^2 - ((x^2 - 2) * (1)) + H^2 := by rw [div_self hx₂]
+              _= x^2 - x^2 + 2 + H^2 := by ring
+              _= 2 + H^2 := by ring
+              _> 2 := by nlinarith
+
+          have h₅ : q^2 < 2 := by aesop
+          have h₆ :=
+            calc 0
+              _< (x-H)^2 - q^2 := by linarith
+              _= (x - H + q) * (x - H - q) := by ring
+              _= (x - (x ^ 2 - 2) / (2 * x) + q) * (x - H - q) := by ring
+              _= ((x ^ 2 + 2) / (2 * x) + q) * (x - H - q) := by rw [alg₁ x q hx]
+
+          have h₇ : 0 < x - H - q := by
+            have hp₁ : 0 < (x ^ 2 + 2) / (2 * x) + q := by positivity
+            let A := ((x ^ 2 + 2) / (2 * x) + q)
+            let B := (x - H - q)
+            apply @rel₁ A B hp₁ h₆
+
+
+
+      sorry
+
+
+
+
+
+
+
+
+
+
+
+    · --  2 ≤ x ^ 2 -- 1:07:07
+      by_contra hc
+      push_neg at hc
+      have h₃ : 1 ≤ x := by aesop
+      let H := min ((2-x^2)/(2*(2*x + 1))) (1/2)
+      have H₁ : 0 < H := by
+        dsimp [H]
+        simp
+        simp_all only [sub_pos, div_pos_iff_of_pos_left, Nat.ofNat_pos, mul_pos_iff_of_pos_left]
+        linarith
+      have H₂ : H < 1 := by
+        simp_all only [one_div, lt_min_iff, sub_pos, div_pos_iff_of_pos_left, Nat.ofNat_pos, mul_pos_iff_of_pos_left,
+          inv_pos, and_true, min_lt_iff, H]
+        right
+        norm_num
+      -- now prove that x + H ∈ E
+      let φ := 2 * x + 1
+      have h' : φ ≠ 0 := by aesop
+      have H₃ : H ≤ ((2 - x^2)/(2*φ)) := by aesop
+
+      have hxe := -- show (x + H) ^ 2 < 2
+        calc (x + H)^2
+          _= x^2 + 2 * x * H + H^2 := by ring
+          _< x^2 + 2 * x * H + H := by nlinarith
+          _= x^2 + φ * H := by ring
+          _≤ x^2 + φ * ((2 - x^2)/(2*(2*x+1))) := by rel [H₃]
+          _= x^2 + φ * (1/(2*φ)) * (2 - x^2) := by ring
+          _= x^2 + (φ / (2*φ)) * (2 - x^2) := by ring
+          _= x^2 + (φ / (φ*2)) * (2 - x^2) := by ring
+          _= x^2 + (1 / 2) * (2 - x^2) := by rw [div_mul_right 2 h']
+          _< x^2 + (1    ) * (2 - x^2) := by
+            have h₇ : 0 < 2 - x ^ 2 := by nlinarith
+            gcongr; norm_num
+          _= 2 := by ring
+
+      have hxe₂ : (x + H)^2 < 2 → x + H ∈ E := by aesop
+      have hxe₄ : x + H ∈ E := by apply hxe₂; exact hxe
+      -- have hxe₅ := @h₂ (x + H)
+
+      -- norm_num at hxe₅
+
+      simp_all
+      have hxe₆ : ¬ IsLUB E x := by
+        intro h
+        have con₂ := @h₁ (x+H) hxe₄
+        have : ¬ 0 < H := by linarith
+        contradiction
+      contradiction
+
+
+
+
+
+
+
+
+
+
+
+
+end q_no_lubp
 
 
 
