@@ -553,7 +553,7 @@ example (a b : ℚ) (h₁ : a < b) (h₂ : x = min a b) : x = a := by
   rw [min_eq_left_iff]
   linarith
 
-def E := {q : ℚ | q^2 < 2}
+def E := {q : ℚ | 0 < q ∧ q^2 < 2}
 
 theorem cancel_lemma₁ (a b : ℚ) (h : a≠0) : (a/(a*b)) = (1/b) := by
   exact div_mul_right b h
@@ -578,8 +578,7 @@ lemma rel₁ (a b : ℚ) {ha : 0 < a} {hab : 0 < a * b} : 0 < b := by
 
 
 
-example (x q : ℚ) (hq₁ : q ∈ E) (hq₂ : 0 < q) :
-    IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
+example (x q : ℚ) : IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
   --
   intro h₉
   have con₁ := h₉
@@ -610,7 +609,7 @@ example (x q : ℚ) (hq₁ : q ∈ E) (hq₂ : 0 < q) :
 
         have H₃ : upperBounds E (x - H) := by
           simp [upperBounds, E]
-          intro b hb
+          intro q hq₀ hq₁
           have hx : x ≠ 0 := by aesop
           have hx₂ : 2 * x ≠ 0 := by aesop
           have hx₃ : 0 < x := by aesop
@@ -632,31 +631,31 @@ example (x q : ℚ) (hq₁ : q ∈ E) (hq₂ : 0 < q) :
               _= (x - H + q) * (x - H - q) := by ring
               _= (x - (x ^ 2 - 2) / (2 * x) + q) * (x - H - q) := by ring
               _= ((x ^ 2 + 2) / (2 * x) + q) * (x - H - q) := by rw [alg₁ x q hx]
-
+          have : 0 < q := by aesop
           have h₇ : 0 < x - H - q := by
             have hp₁ : 0 < (x ^ 2 + 2) / (2 * x) + q := by positivity
-            let A := ((x ^ 2 + 2) / (2 * x) + q)
+            let A := (x ^ 2 + 2) / (2 * x) + q
             let B := (x - H - q)
             apply @rel₁ A B hp₁ h₆
+          linarith
 
-
-
-      sorry
-
-
-
-
-
-
-
-
-
+        have : x ≤ x - H := by
+          simp [upperBounds] at H₃
+          apply h₂
+          intro v hv
+          apply H₃
+          exact hv
+        norm_num at *
+        have : ¬ 0 < H := by linarith
+        contradiction
+      push_neg at h₃
+      exact h₃
 
 
     · --  2 ≤ x ^ 2 -- 1:07:07
       by_contra hc
       push_neg at hc
-      have h₃ : 1 ≤ x := by aesop
+      have h₃ : 1 ≤ x := by apply h₁; unfold E; norm_num
       let H := min ((2-x^2)/(2*(2*x + 1))) (1/2)
       have H₁ : 0 < H := by
         dsimp [H]
@@ -688,12 +687,14 @@ example (x q : ℚ) (hq₁ : q ∈ E) (hq₂ : 0 < q) :
             gcongr; norm_num
           _= 2 := by ring
 
-      have hxe₂ : (x + H)^2 < 2 → x + H ∈ E := by aesop
+      have hxe₂ : (x + H)^2 < 2 → x + H ∈ E := by
+        intro hh₁
+        unfold E
+        constructor
+        · positivity
+        · exact hh₁
+
       have hxe₄ : x + H ∈ E := by apply hxe₂; exact hxe
-      -- have hxe₅ := @h₂ (x + H)
-
-      -- norm_num at hxe₅
-
       simp_all
       have hxe₆ : ¬ IsLUB E x := by
         intro h
