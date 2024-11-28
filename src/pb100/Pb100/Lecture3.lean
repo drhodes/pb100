@@ -1,10 +1,10 @@
 -- Lecture3.lean, part 1
-import Mathlib.Tactic
-import Mathlib.Algebra.ModEq
-import Mathlib.Data.Set.Basic
-import Mathlib.Logic.Basic
-import Mathlib.Order.Bounds.Basic
-import Mathlib.Order.Notation
+import Mathlib
+-- import Mathlib.Algebra.ModEq
+-- import Mathlib.Data.Set.Basic
+-- import Mathlib.Logic.Basic
+-- import Mathlib.Order.Bounds.Basic
+-- import Mathlib.Order.Notation
 
 
 namespace Lecture3
@@ -106,7 +106,6 @@ lemma ord_antisymm : AntiSymmetric (· ≺ ·) := by
   · apply h₁ w
   · apply h₂ w
 
-
 lemma ord_trans : Transitive (· ≺ ·) := by
   dsimp [Transitive]
   intro x y z hx hy
@@ -161,10 +160,6 @@ end ex₂
 --    a lower bound of E.
 
 
-
-
-
-
 def StrictOrder {r: Type} (α: r → r → Prop) :=
   Irreflexive α ∧ AntiSymmetric α ∧ Transitive α
 
@@ -186,7 +181,6 @@ example: BddAbove E := ⟨2, by aesop (add simp [E])⟩
 
 end example12_term
 
-
 namespace example12
 
 def E : Set ℤ := {-2, -1, 0, 1, 2}
@@ -195,7 +189,6 @@ example: BddAbove E := by
   use 3
   intro x h
   aesop (add simp [E]) -- todo explain how this is working.
-
 
 example : IsLUB E 2 := by
   constructor
@@ -210,7 +203,6 @@ example : IsLUB E 2 := by
     apply h₁
     dsimp [E]
     simp
-
 
 def S₁ := {n:ℕ | n < 3}
 
@@ -238,7 +230,6 @@ lemma rat_antisymm'  (x y : ℚ) : ( x ≤ y ) ∧ ( y ≤ x ) → x = y := by
   | inl h => exact h
   | inr h => contradiction
 
-
 lemma rat_trans  (x y z: ℚ) : ( x ≤ y ) ∧ ( y ≤ z ) → x ≤ z := by
   intro h
   obtain ⟨h₁, h₂⟩ := h
@@ -253,7 +244,6 @@ def ub (s: Set α) [LE α] := { b : α | ∀ a ∈ s, a ≤ b }
 -- (a) l is an upper bound for E;
 -- (b) If b is an upper bound for E, then l ≤ b
 def Sup (s: Set α) (l: α) [LE α] := l ∈ (ub s) ∧ ∀ b ∈ s, b ∈ (ub s) → l ≤ b
-
 
 -- Hi all, I'm having trouble showing the 3 is the least upper bound of the
 -- following set S:
@@ -287,7 +277,6 @@ example: IsLeast (upperBounds S) 3 := by
   · -- 3 ∈ lowerBounds (upperBounds S)
     sorry
     -- trying to prove this below: three_in_lb_of_ub.
-
 
 lemma three_in_lb_of_ub : 3 ∈ lowerBounds (upperBounds S) := by
   dsimp [lowerBounds]
@@ -547,19 +536,11 @@ theorem not_lubp_rat : ¬ lubp {q | q : ℚ} := by
   sorry
 
 
--- need to know how to use min for this proof.
-example (a b : ℚ) (h₁ : a < b) (h₂ : x = min a b) : x = a := by
-  rw [h₂]
-  rw [min_eq_left_iff]
-  linarith
-
 def E := {q : ℚ | 0 < q ∧ q^2 < 2}
 
-theorem cancel_lemma₁ (a b : ℚ) (h : a≠0) : (a/(a*b)) = (1/b) := by
-  exact div_mul_right b h
+-- theorem cancel_lemma₁ (a b : ℚ) (h : a≠0) : (a/(a*b)) = (1/b) := by
+--   exact div_mul_right b h
 
-example : ¬ ∃ x, x ∈ {q | univ ℚ} ∧ IsLUB E x := by
-  sorry
 
 lemma alg₁ (x q : ℚ) (h : x ≠ 0):
   (x - (x ^ 2 - 2) / (2 * x) + q) = ((x ^ 2 + 2) / (2 * x) + q) := by
@@ -577,8 +558,7 @@ lemma rel₁ (a b : ℚ) {ha : 0 < a} {hab : 0 < a * b} : 0 < b := by
   exact (pos_iff_pos_of_mul_pos hab).mp ha
 
 
-
-example (x q : ℚ) : IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
+lemma rat_part_1 (x : ℚ) : IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
   --
   intro h₉
   have con₁ := h₉
@@ -624,7 +604,6 @@ example (x q : ℚ) : IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
               _= 2 + H^2 := by ring
               _> 2 := by nlinarith
 
-          have h₅ : q^2 < 2 := by aesop
           have h₆ :=
             calc 0
               _< (x-H)^2 - q^2 := by linarith
@@ -674,10 +653,10 @@ example (x q : ℚ) : IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
 
       have hxe := -- show (x + H) ^ 2 < 2
         calc (x + H)^2
-          _= x^2 + 2 * x * H + H^2 := by ring
-          _< x^2 + 2 * x * H + H := by nlinarith
-          _= x^2 + φ * H := by ring
-          _≤ x^2 + φ * ((2 - x^2)/(2*(2*x+1))) := by rel [H₃]
+          _= x^2 + 2*x*H + H^2 := by ring
+          _< x^2 + 2*x*H + H := by nlinarith
+          _= x^2 + φ*H := by ring
+          _≤ x^2 + φ * ((2 - x^2) / (2*(2*x + 1))) := by rel [H₃]
           _= x^2 + φ * (1/(2*φ)) * (2 - x^2) := by ring
           _= x^2 + (φ / (2*φ)) * (2 - x^2) := by ring
           _= x^2 + (φ / (φ*2)) * (2 - x^2) := by ring
@@ -695,13 +674,181 @@ example (x q : ℚ) : IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
         · exact hh₁
 
       have hxe₄ : x + H ∈ E := by apply hxe₂; exact hxe
-      simp_all
+
       have hxe₆ : ¬ IsLUB E x := by
-        intro h
-        have con₂ := @h₁ (x+H) hxe₄
+        have con₂ := @h₁ (x + H) hxe₄
         have : ¬ 0 < H := by linarith
         contradiction
       contradiction
+
+/-
+
+Suppose there exists an x ∈ ℚ, x = sup E.
+Then by our previous theorem, x^2 = 2.
+Note that 1 < x as otherwise x ≤ 1 → 2 = x^2 < 1^2
+Thus, ∃ m, n ∈ ℕ such that n < m and x = m/n.
+Therefore ∃ n ∈ ℕ, n * x ∈ ℕ
+Define S := {k ∈ ℕ | k*x ∈ ℕ}
+Then S ≠ ∅, since n ∈ S.
+By well ordering of ℕ, S has least element k₀.
+Let k₁ = k₀*x - k₀ ∈ ℤ
+Then k₁ = k₀ * (x - 1) < k₀ * (2 - 1) = k₀.
+So, k₁ ∈ ℕ and k₁ < k₀ → k₁ ∉ S because k₀ is the least element of S.
+But, x*k₁ = k₀*x^2 - x*k₀ = 2*k₀ - x*k₀ = k₀-k₁ ∈ ℕ → k₁ ∈ S
+This is a contradiction. Thus, ∄x ∈ ℚ such that x = sup E.
+
+-/
+
+
+lemma rat_den_unity_is_int (q: ℚ) (h : q.den = 1) : ∃ n : ℤ, n = q := by
+  exact CanLift.prf q h
+
+lemma rat_eq_iff_num_dem (q r : ℚ) : q.num = r.num ∧ q.den = r.den → q = r := by
+  intro h
+  obtain ⟨h₁, h₂⟩ := h
+  exact Rat.ext h₁ h₂
+
+lemma rat_den_unity_is_nat (q: ℚ) (h₁ : q.den = 1) (h₂ : 0 ≤ q ): ∃ n : ℕ, n = q := by
+  use q.num.toNat
+  apply Rat.ext
+  · aesop
+  · aesop
+
+lemma lem₄ (k₀ : ℕ) (x : ℚ) (h₁ : 1 < x) (h₂ : 0 < k₀) : k₀ < k₀ * x := by
+  calc ↑k₀
+    _= ↑k₀ * (1:ℚ) := by ring
+    _< ↑k₀ * x := by rel [h₁]
+
+lemma coerce_sub_dist (a b : ℕ) : ↑(a - b) = ↑a - ↑b := by rfl
+
+theorem coerce_dist (a b : ℤ) (x : ℚ) : x * ↑(a - b) = x * (↑a - ↑b) := by
+  aesop
+
+
+
+
+
+theorem rationals_have_holes : ¬ ∃ x, IsLUB E x := by
+  by_contra hc
+  have hc₁ := hc
+  obtain ⟨x, hx⟩ := hc
+  obtain ⟨hr₁, hr₂⟩ := rat_part_1 x hx
+  obtain ⟨hx₁, hx₂⟩ := hx
+  --dsimp [upperBounds, lowerBounds] at *
+  let m := x.num
+  let n := x.den
+  let S := {k : ℕ | (k * x).den = 1 } \ {0}
+
+  have n_is_el : n ∈ S := by aesop
+  have ht : S.Nonempty := by exact nonempty_of_mem n_is_el
+
+  have hle : ∃ k , IsLeast S k := by
+    use (sInf S)
+    constructor
+    · apply Nat.sInf_mem ht
+    · exact (isLeast_csInf ht).right
+
+  obtain ⟨k₀, hk⟩ := hle
+  have hkq₁ : k₀ ∈ S := by exact mem_of_mem_inter_left hk
+
+  let k₀x' := k₀ * x
+  have h₁k₀x : (k₀x').den = 1 := by aesop
+  have h₂k₀x : 0 ≤ k₀x' := by positivity
+  obtain ⟨k₀x, hk₀x⟩ := rat_den_unity_is_nat k₀x' h₁k₀x h₂k₀x
+
+  let k₁ := k₀x - k₀
+
+
+  have hkq₂ : (k₀ * x).den = 1 := by
+    obtain ⟨hq₁, hq₂⟩ := hkq₁
+    apply hq₁
+
+  have hk₂ : 0 < k₀ := by
+    apply Nat.zero_lt_of_ne_zero
+    unfold S at hkq₁
+    simp_all
+
+  have hx₃ : x < 2 := by nlinarith
+
+  -- Then k₁ = k₀ * (x - 1) < k₀ * (2 - 1) = k₀.
+  have asdfasdf :=
+    calc ↑k₁
+      _= ↑k₀x - ↑k₀ := by sorry
+      _= k₀ * x - k₀  := by sorry
+      _= k₀ * (x - 1) := by ring
+      _< k₀ * (2 - 1) := by rel [hx₃]
+      _= k₀ := by ring
+
+  -- So, k₁ ∈ ℕ and k₁ < k₀ → k₁ ∉ S because k₀ is the least element of S.
+  -- need to prove k₁ has den = 1.
+
+  have hhk₂ : 0 ≤ k₁ := by aesop
+
+  have hc₂ : ¬ (k₁ ∈ S) := by
+    obtain ⟨hj₁, hj₂⟩ := hk
+    simp [lowerBounds] at hj₂
+    intro hj₃
+    have hj₄ := @hj₂ k₁
+    contrapose hj₄
+    push_neg
+    constructor
+    · exact hj₃
+    · --
+      have hx₅ : 1 < x := by nlinarith
+      have hh₀ : 0 < k₁ := by
+        aesop
+        omega
+      dsimp [k₁]
+      aesop
+
+  -- But, x*k₁ = k₀*x^2 - x*k₀ = 2*k₀ - x*k₀ = k₀-k₁ ∈ ℕ → k₁ ∈ S
+
+  -- ! k₁ < k₀
+  -- ! k₁ ∈ S
+  -- ! k₀ is not the least element in S.
+  have hcc₁ : k₀x = k₀x' := by aesop
+
+  have hc₄ : k₁ ∈ S := by
+
+    have hh₁ : x * k₁ = k₀ - k₁ := by
+      dsimp [k₁]
+      have : x * ↑(k₁) = x * ↑(k₀x - k₀) := by dsimp [k₁]
+      have : x * ↑(k₀x - k₀) = x * ↑k₀x - x * ↑k₀ := by
+        rw [hk₀x]
+        rw [mul_eq_mul_left_iff] at this
+        cases this with
+        | inr h => rw [h]; ring
+        | inl h =>
+          · --
+            rw [←h]
+            have he₁ :=
+              calc x * k₀x' - x * ↑k₀
+                _= x * (k₀x' - ↑k₀) := by ring
+            rw [he₁]
+            rw [mul_eq_mul_left_iff]
+            left
+            dsimp [k₁]
+            dsimp [k₀x']
+            have he₂ :=
+              calc ↑k₀ * x - ↑k₀
+                _= ↑k₀ * (x - 1) := by ring
+            rw [he₂]
+            have he₃ : ↑(k₀x - k₀) = (↑k₀x) - (↑k₀) := by aesop
+
+
+    -- need to establish that k₁ in S.
+
+    -- have hkx : (x * k₁).den = 1 := by
+    --   dsimp [k₁]
+
+
+
+  -- this establishes that x*k₁ is a natural number
+  -- therefore k₁ ∈ S, by dsimp S and some figuring.
+  contradiction
+
+
+
 
 
 
