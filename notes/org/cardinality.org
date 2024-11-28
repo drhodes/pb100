@@ -1,0 +1,35 @@
+Your definition of card_lt is not correct.
+
+It is not good enough to say that there is an injection that is not a
+bijection.
+
+You have to say there is an injection, and there is no function that
+is a bijection.
+
+For example, consider the function ff from the natural numbers to the
+natural numbers defined by f(n)=n+1f(n)=n+1.
+
+That function is an injection but not a bijection, so by your
+definition you would end up concluding that the natural numbers are
+smaller than themselves, which is wrong.
+
+Also, there is a slight technicality concerning the empty set.
+
+Suppose α is a nonempty type and β is an empty type.
+
+Then there is no function from α to β. But the empty sets of those two
+types should have the same cardinality. The problem is caused by the
+fact that you use functions f : α → β, so f must assign a value to
+every object of type α--even those that are not elements of A, so
+values are not needed for them. As long as β is nonempty it is
+possible to assign those values, so there won't be a problem. But if
+you try to prove theorems about cardinality using your definitions,
+occasionally you may run into situations in which you need to add a
+hypothesis that β is nonempty.
+
+In How To Prove It with Lean, I took a similar approach, but I used
+relations rather than functions to avoid this technicality concerning
+unneeded values. Cardinalities are covered in Chapter 8.  The proof of
+Cantor's theorem is at the end of Section 8.2.
+
+
