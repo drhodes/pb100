@@ -722,25 +722,63 @@ lemma rat_den_one_is_nat_of_lt (q: ℚ) (h₁ : q.den = 1) (h₂ : 0 < q ) : ∃
     exact h₂
   · aesop
 
-lemma lem₄ (k₀ : ℕ) (x : ℚ) (h₁ : 1 < x) (h₂ : 0 < k₀) : k₀ < k₀ * x := by
-  calc ↑k₀
-    _= ↑k₀ * (1:ℚ) := by ring
-    _< ↑k₀ * x := by rel [h₁]
+-- lemma lem₄ (k₀ : ℕ) (x : ℚ) (h₁ : 1 < x) (h₂ : 0 < k₀) : k₀ < k₀ * x := by
+--   calc ↑k₀
+--     _= ↑k₀ * (1:ℚ) := by ring
+--     _< ↑k₀ * x := by rel [h₁]
 
-lemma coerce_sub_dist (a b : ℕ) : ↑(a - b) = ↑a - ↑b := by rfl
 
-theorem coerce_dist (a b : ℤ) (x : ℚ) : x * ↑(a - b) = x * (↑a - ↑b) := by
-  aesop
+lemma rat_den_unity_is_nat (q: ℚ) (h₁ : q.den = 1) (h₂ : 0 ≤ q ): ∃ n : ℕ, n = q := by
+  use q.num.toNat
+  apply Rat.ext
+  · aesop
+  · aesop
 
-lemma q_is_q_num (q : ℚ) (h₁ : q.den = 1) : q = q.num := by
-  exact Eq.symm ((fun r ↦ (Rat.den_eq_one_iff r).mp) q h₁)
+lemma rat_eq_self_num (q : ℚ) (hq : q.den = 1) : q = q.num := by
+  apply Rat.ext
+  · rfl
+  · simp_all only [Rat.intCast_den]
 
-lemma int_is_nat (c : ℤ) (h: 0 < c) : ∃ n : ℕ, c = n := by
-  use c.toNat
-  simp_all only [Int.ofNat_toNat]
-  exact Eq.symm (max_eq_left_of_lt h)
+lemma den_one_of_int_rat (a : ℤ) : (↑a : ℚ).den = 1 := by exact rfl
 
-theorem rationals_have_holes : ¬ ∃ x, IsLUB E x := by
+-- ↑(k₀ * x - k₀).num.toNat * x).den = 1
+lemma rat_sub_den_one (q r : ℚ) (hq : q.den = 1) (hr : r.den = 1) :  (q - r).den = 1 := by
+  -- establish that q and r can be lowered into the integers.
+  obtain ⟨q', hqz⟩ :=  rat_den_unity_is_int q hq
+  obtain ⟨r', hrz⟩ :=  rat_den_unity_is_int r hr
+
+  -- establish that integers raised lifted into the rationals have den = 1
+  have h₁ := den_one_of_int_rat (q' - r')
+  have h₂ : ↑(q' - r') = q - r := by aesop
+  rw [←h₂]
+  exact h₁
+
+lemma rat_mul_den_one (q r : ℚ) (hq : q.den = 1) (hr : r.den = 1) :  (q * r).den = 1 := by
+  -- establish that q and r can be lowered into the integers.
+  obtain ⟨q', hqz⟩ :=  rat_den_unity_is_int q hq
+  obtain ⟨r', hrz⟩ :=  rat_den_unity_is_int r hr
+
+  -- establish that integers raised lifted into the rationals have den = 1
+  have h₁ := den_one_of_int_rat (q' * r')
+
+  have h₂ : ↑(q' * r') = q * r := by aesop
+  rw [←h₂]
+  exact h₁
+
+--lemma coerce_sub_dist (a b : ℕ) : ↑(a - b) = ↑a - ↑b := by rfl
+
+-- theorem coerce_dist (a b : ℤ) (x : ℚ) : x * ↑(a - b) = x * (↑a - ↑b) := by
+--   aesop
+
+-- lemma q_is_q_num (q : ℚ) (h₁ : q.den = 1) : q = q.num := by
+--   exact Eq.symm ((fun r ↦ (Rat.den_eq_one_iff r).mp) q h₁)
+
+-- lemma int_is_nat (c : ℤ) (h: 0 < c) : ∃ n : ℕ, c = n := by
+--   use c.toNat
+--   simp_all only [Int.ofNat_toNat]
+--   exact Eq.symm (max_eq_left_of_lt h)
+
+theorem not_rationals_have_lub_prop : ¬ ∃ x, IsLUB E x := by
   by_contra hc
   have hc₁ := hc
   obtain ⟨x, hx⟩ := hc
@@ -796,6 +834,10 @@ theorem rationals_have_holes : ¬ ∃ x, IsLUB E x := by
 
   have hhk₃ : k₁.den = 1 := by
     unfold k₁
+    apply rat_sub_den_one
+    aesop
+    aesop
+
   obtain ⟨j, hj⟩ := rat_den_one_is_nat_of_lt k₁ hhk₃ hhk₂
 
   have hc₂ : ¬ (j ∈ S) := by
@@ -813,72 +855,43 @@ theorem rationals_have_holes : ¬ ∃ x, IsLUB E x := by
 
 
   -- But, x*k₁ = k₀*x^2 - x*k₀ = 2*k₀ - x*k₀ = k₀-k₁ ∈ ℕ → k₁ ∈ S
-
   -- ! j < k₀
   -- ! k₁ ∈ S
   -- ! k₀ is not the least element in S.
 
-
   have hc₄ : j ∈ S := by
+    have h₁ :=
+      calc x * j
+        _= x * k₁ := by aesop
+        _= x * (↑k₀ * x - ↑k₀) := by rfl
+        _= ↑k₀ * x ^ 2 - ↑k₀ * x := by ring
+        _= ↑k₀ * 2 - ↑k₀ * x := by rw [hr₂]
+        _= - (↑k₀ * x - ↑k₀ * 2) := by ring
+        _= - (↑k₀ * x - ↑k₀ - ↑k₀) := by ring
+        _= - (k₁ - ↑k₀) := by ring
+        _= k₀ - ↑k₁ := by ring
+        _= k₀ - j := by aesop
+
+    have h₂ : (↑j : ℚ).den = 1 := by aesop
+    have h₃ : (↑k₀ - ↑j : ℚ).den = 1 := by
+      apply rat_sub_den_one
+      · aesop
+      · aesop
+
+    rw [←h₁] at h₃
+
+    have h₄ : 0 < ↑j := by
+      rw [←hj] at hhk₂
+      qify
+      exact hhk₂
+
     unfold S
     constructor
-    · sorry
-    · sorry
-
+    · rw [mul_comm]
+      exact h₃
+    · exact h₄
 
   contradiction
-
-    -- have hh₁ : x * k₁ = k₀ - k₁ := by
-
-
-      -- dsimp [k₁]
-      -- have : x * ↑(k₁) = x * ↑(k₀x - k₀) := by dsimp [k₁]
-      -- have : x * ↑(k₀x - k₀) = x * ↑k₀x - x * ↑k₀ := by
-      --   rw [hk₀x]
-      --   rw [mul_eq_mul_left_iff] at this
-      --   cases this with
-      --   | inr h => rw [h]; ring
-      --   | inl h =>
-      --     · --
-      --       rw [←h]
-      --       have he₁ :=
-      --         calc x * k₀x' - x * ↑k₀
-      --           _= x * (k₀x' - ↑k₀) := by ring
-      --       rw [he₁]
-      --       rw [mul_eq_mul_left_iff]
-      --       left
-      --       dsimp [k₁]
-      --       dsimp [k₀x']
-      --       have he₂ :=
-      --         calc ↑k₀ * x - ↑k₀
-      --           _= ↑k₀ * (x - 1) := by ring
-      --       rw [he₂]
-      --       have he₃ : ↑(k₀x - k₀) = (↑k₀x) - (↑k₀) := by aesop
-
-
-    -- need to establish that k₁ in S.
-
-    -- have hkx : (x * k₁).den = 1 := by
-    --   dsimp [k₁]
-
-
-
-  -- this establishes that x*k₁ is a natural number
-  -- therefore k₁ ∈ S, by dsimp S and some figuring.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 end q_no_lubp
