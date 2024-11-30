@@ -699,7 +699,6 @@ This is a contradiction. Thus, ∄x ∈ ℚ such that x = sup E.
 
 -/
 
-
 lemma rat_den_unity_is_int (q: ℚ) (h : q.den = 1) : ∃ n : ℤ, n = q := by
   exact CanLift.prf q h
 
@@ -708,10 +707,19 @@ lemma rat_eq_iff_num_dem (q r : ℚ) : q.num = r.num ∧ q.den = r.den → q = r
   obtain ⟨h₁, h₂⟩ := h
   exact Rat.ext h₁ h₂
 
-lemma rat_den_unity_is_nat (q: ℚ) (h₁ : q.den = 1) (h₂ : 0 ≤ q ): ∃ n : ℕ, n = q := by
+lemma rat_den_one_is_nat_of_le (q: ℚ) (h₁ : q.den = 1) (h₂ : 0 ≤ q ): ∃ n : ℕ, n = q := by
   use q.num.toNat
   apply Rat.ext
   · aesop
+  · aesop
+
+lemma rat_den_one_is_nat_of_lt (q: ℚ) (h₁ : q.den = 1) (h₂ : 0 < q ) : ∃ n : ℕ, n = q := by
+  use q.num.toNat
+  apply Rat.ext
+  · simp_all only [Rat.num_natCast, Int.ofNat_toNat, max_eq_left_iff, Rat.num_nonneg]
+    rw [le_iff_lt_or_eq]
+    left
+    exact h₂
   · aesop
 
 lemma lem₄ (k₀ : ℕ) (x : ℚ) (h₁ : 1 < x) (h₂ : 0 < k₀) : k₀ < k₀ * x := by
@@ -724,17 +732,23 @@ lemma coerce_sub_dist (a b : ℕ) : ↑(a - b) = ↑a - ↑b := by rfl
 theorem coerce_dist (a b : ℤ) (x : ℚ) : x * ↑(a - b) = x * (↑a - ↑b) := by
   aesop
 
+lemma q_is_q_num (q : ℚ) (h₁ : q.den = 1) : q = q.num := by
+  exact Eq.symm ((fun r ↦ (Rat.den_eq_one_iff r).mp) q h₁)
 
-
-
+lemma int_is_nat (c : ℤ) (h: 0 < c) : ∃ n : ℕ, c = n := by
+  use c.toNat
+  simp_all only [Int.ofNat_toNat]
+  exact Eq.symm (max_eq_left_of_lt h)
 
 theorem rationals_have_holes : ¬ ∃ x, IsLUB E x := by
   by_contra hc
   have hc₁ := hc
   obtain ⟨x, hx⟩ := hc
   obtain ⟨hr₁, hr₂⟩ := rat_part_1 x hx
+  have hr₁ : 1 < x := by nlinarith
   obtain ⟨hx₁, hx₂⟩ := hx
-  --dsimp [upperBounds, lowerBounds] at *
+
+
   let m := x.num
   let n := x.den
   let S := {k : ℕ | (k * x).den = 1 ∧ 0 < k}
@@ -752,30 +766,20 @@ theorem rationals_have_holes : ¬ ∃ x, IsLUB E x := by
   obtain ⟨k₀, hk⟩ := hle
   have hkq₁ : k₀ ∈ S := by exact mem_of_mem_inter_left hk
 
-  let k₀x' := k₀ * x
-  have h₁k₀x : (k₀x').den = 1 := by aesop
-  have h₂k₀x : 0 ≤ k₀x' := by positivity
-  obtain ⟨k₀x, hk₀x⟩ := rat_den_unity_is_nat k₀x' h₁k₀x h₂k₀x
+  have hk₀ : 0 < k₀ := by aesop
 
-  let k₁ := k₀x - k₀
-
+  let k₁ := ↑k₀ * x - ↑k₀
 
   have hkq₂ : (k₀ * x).den = 1 := by
     obtain ⟨hq₁, hq₂⟩ := hkq₁
     apply hq₁
 
-  have hk₂ : 0 < k₀ := by
-    apply Nat.zero_lt_of_ne_zero
-    unfold S at hkq₁
-    simp_all
-
   have hx₃ : x < 2 := by nlinarith
 
-  -- Then k₁ = k₀ * (x - 1) < k₀ * (2 - 1) = k₀.
-  have asdfasdf :=
-    calc ↑k₁
-      _= ↑k₀x - ↑k₀ := by sorry
-      _= k₀ * x - k₀  := by sorry
+  -- Then k₁ = k₀ * (x - 1) < k₀ * (2 - 1) = k₀
+  have hk₃ :=
+    calc k₁
+      _= k₀ * x - k₀ := by rfl
       _= k₀ * (x - 1) := by ring
       _< k₀ * (2 - 1) := by rel [hx₃]
       _= k₀ := by ring
@@ -783,58 +787,73 @@ theorem rationals_have_holes : ¬ ∃ x, IsLUB E x := by
   -- So, k₁ ∈ ℕ and k₁ < k₀ → k₁ ∉ S because k₀ is the least element of S.
   -- need to prove k₁ has den = 1.
 
-  have hhk₂ : 0 ≤ k₁ := by aesop
+  have hhk₂ : 0 < k₁ := by
+    unfold k₁
+    have : ↑k₀ * (x - 1) = ↑k₀ * x - ↑k₀ := by ring
+    rw [←this]
+    have : 0 < (x - 1) := by nlinarith
+    aesop
 
-  have hc₂ : ¬ (k₁ ∈ S) := by
+  have hhk₃ : k₁.den = 1 := by
+    unfold k₁
+  obtain ⟨j, hj⟩ := rat_den_one_is_nat_of_lt k₁ hhk₃ hhk₂
+
+  have hc₂ : ¬ (j ∈ S) := by
     obtain ⟨hj₁, hj₂⟩ := hk
-    simp [lowerBounds] at hj₂
     intro hj₃
-    have hj₄ := @hj₂ k₁
+    have hj₄ := @hj₂ j
     contrapose hj₄
     push_neg
     constructor
     · exact hj₃
     · --
-      have hx₅ : 1 < x := by nlinarith
-      have hh₀ : 0 < k₁ := by
-        aesop
-        omega
-      dsimp [k₁]
-      aesop
+      rw [←hj] at hk₃
+      qify
+      exact hk₃
+
 
   -- But, x*k₁ = k₀*x^2 - x*k₀ = 2*k₀ - x*k₀ = k₀-k₁ ∈ ℕ → k₁ ∈ S
 
-  -- ! k₁ < k₀
+  -- ! j < k₀
   -- ! k₁ ∈ S
   -- ! k₀ is not the least element in S.
-  have hcc₁ : k₀x = k₀x' := by aesop
 
-  have hc₄ : k₁ ∈ S := by
 
-    have hh₁ : x * k₁ = k₀ - k₁ := by
-      dsimp [k₁]
-      have : x * ↑(k₁) = x * ↑(k₀x - k₀) := by dsimp [k₁]
-      have : x * ↑(k₀x - k₀) = x * ↑k₀x - x * ↑k₀ := by
-        rw [hk₀x]
-        rw [mul_eq_mul_left_iff] at this
-        cases this with
-        | inr h => rw [h]; ring
-        | inl h =>
-          · --
-            rw [←h]
-            have he₁ :=
-              calc x * k₀x' - x * ↑k₀
-                _= x * (k₀x' - ↑k₀) := by ring
-            rw [he₁]
-            rw [mul_eq_mul_left_iff]
-            left
-            dsimp [k₁]
-            dsimp [k₀x']
-            have he₂ :=
-              calc ↑k₀ * x - ↑k₀
-                _= ↑k₀ * (x - 1) := by ring
-            rw [he₂]
-            have he₃ : ↑(k₀x - k₀) = (↑k₀x) - (↑k₀) := by aesop
+  have hc₄ : j ∈ S := by
+    unfold S
+    constructor
+    · sorry
+    · sorry
+
+
+  contradiction
+
+    -- have hh₁ : x * k₁ = k₀ - k₁ := by
+
+
+      -- dsimp [k₁]
+      -- have : x * ↑(k₁) = x * ↑(k₀x - k₀) := by dsimp [k₁]
+      -- have : x * ↑(k₀x - k₀) = x * ↑k₀x - x * ↑k₀ := by
+      --   rw [hk₀x]
+      --   rw [mul_eq_mul_left_iff] at this
+      --   cases this with
+      --   | inr h => rw [h]; ring
+      --   | inl h =>
+      --     · --
+      --       rw [←h]
+      --       have he₁ :=
+      --         calc x * k₀x' - x * ↑k₀
+      --           _= x * (k₀x' - ↑k₀) := by ring
+      --       rw [he₁]
+      --       rw [mul_eq_mul_left_iff]
+      --       left
+      --       dsimp [k₁]
+      --       dsimp [k₀x']
+      --       have he₂ :=
+      --         calc ↑k₀ * x - ↑k₀
+      --           _= ↑k₀ * (x - 1) := by ring
+      --       rw [he₂]
+      --       have he₃ : ↑(k₀x - k₀) = (↑k₀x) - (↑k₀) := by aesop
 
 
     -- need to establish that k₁ in S.
@@ -846,7 +865,7 @@ theorem rationals_have_holes : ¬ ∃ x, IsLUB E x := by
 
   -- this establishes that x*k₁ is a natural number
   -- therefore k₁ ∈ S, by dsimp S and some figuring.
-  contradiction
+
 
 
 
