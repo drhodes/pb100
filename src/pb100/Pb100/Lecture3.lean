@@ -737,8 +737,9 @@ theorem rationals_have_holes : ¬ ∃ x, IsLUB E x := by
   --dsimp [upperBounds, lowerBounds] at *
   let m := x.num
   let n := x.den
-  let S := {k : ℕ | (k * x).den = 1 } \ {0}
+  let S := {k : ℕ | (k * x).den = 1 ∧ 0 < k}
 
+  have hn₁ : 0 < n := by exact Rat.den_pos x
   have n_is_el : n ∈ S := by aesop
   have ht : S.Nonempty := by exact nonempty_of_mem n_is_el
 
