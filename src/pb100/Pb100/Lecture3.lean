@@ -9,6 +9,8 @@ import Mathlib
 
 namespace Lecture3
 
+set_option autoImplicit true
+
 def inj (A: Set α) (B: Set β) (f: α→β) := ∀x ∈ A, ∀y ∈ A, (f x ∈ B) ∧ (f y ∈ B) ∧ f x = f y → x = y
 def sur (A: Set α) (B: Set β) (f: α→β) := ∀y ∈ B, ∃x ∈ A, f x ∈ B ∧ f x = y
 def bij (A: Set α) (B: Set β) (f: α→β) := inj A B f ∧ sur A B f
@@ -519,28 +521,23 @@ example : ¬ ∃ q:ℚ, IsLUB S q := by
   · sorry
 
 
+lemma rat_eq_self_num (q : ℚ) (hq : q.den = 1) : q = q.num := by
+  apply Rat.ext
+  · rfl
+  · simp_all only [Rat.intCast_den]
 
 
 end page24
 
 
-
 namespace q_no_lubp
 
-def lubp (S : Set α) [Preorder α] :=
-  ∀ E ⊆ S, ∃ b ∈ S, E ≠ ∅ ∧ BddAbove E ∧ IsLUB E b
+-- The least upperbound property holds for a set, if all non-empty subsets
+-- have a least upperbound.
 
-#check univ ℚ
-
-theorem not_lubp_rat : ¬ lubp {q | q : ℚ} := by
-  sorry
-
+-- E is such a subset of the rationals, it does not have a least upperbound.
 
 def E := {q : ℚ | 0 < q ∧ q^2 < 2}
-
--- theorem cancel_lemma₁ (a b : ℚ) (h : a≠0) : (a/(a*b)) = (1/b) := by
---   exact div_mul_right b h
-
 
 lemma alg₁ (x q : ℚ) (h : x ≠ 0):
   (x - (x ^ 2 - 2) / (2 * x) + q) = ((x ^ 2 + 2) / (2 * x) + q) := by
@@ -557,8 +554,7 @@ lemma alg₁ (x q : ℚ) (h : x ≠ 0):
 lemma rel₁ (a b : ℚ) {ha : 0 < a} {hab : 0 < a * b} : 0 < b := by
   exact (pos_iff_pos_of_mul_pos hab).mp ha
 
-
-lemma rat_part_1 (x : ℚ) : IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
+lemma lubp_part_1 (x : ℚ) : IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
   --
   intro h₉
   have con₁ := h₉
@@ -581,7 +577,6 @@ lemma rat_part_1 (x : ℚ) : IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
           have : 1 ≤ x := by
             apply h₁
             unfold E; norm_num
-          have hx : 0 < x := by linarith
           rw [div_pos_iff_of_pos_right]
           linarith
           linarith
@@ -682,7 +677,6 @@ lemma rat_part_1 (x : ℚ) : IsLUB E x → 1 ≤ x ∧ x^2 = 2 := by
       contradiction
 
 /-
-
 Suppose there exists an x ∈ ℚ, x = sup E.
 Then by our previous theorem, x^2 = 2.
 Note that 1 < x as otherwise x ≤ 1 → 2 = x^2 < 1^2
@@ -696,22 +690,10 @@ Then k₁ = k₀ * (x - 1) < k₀ * (2 - 1) = k₀.
 So, k₁ ∈ ℕ and k₁ < k₀ → k₁ ∉ S because k₀ is the least element of S.
 But, x*k₁ = k₀*x^2 - x*k₀ = 2*k₀ - x*k₀ = k₀-k₁ ∈ ℕ → k₁ ∈ S
 This is a contradiction. Thus, ∄x ∈ ℚ such that x = sup E.
-
 -/
 
-lemma rat_den_unity_is_int (q: ℚ) (h : q.den = 1) : ∃ n : ℤ, n = q := by
+lemma rat_den_one_is_int (q: ℚ) (h : q.den = 1) : ∃ n : ℤ, n = q := by
   exact CanLift.prf q h
-
-lemma rat_eq_iff_num_dem (q r : ℚ) : q.num = r.num ∧ q.den = r.den → q = r := by
-  intro h
-  obtain ⟨h₁, h₂⟩ := h
-  exact Rat.ext h₁ h₂
-
-lemma rat_den_one_is_nat_of_le (q: ℚ) (h₁ : q.den = 1) (h₂ : 0 ≤ q ): ∃ n : ℕ, n = q := by
-  use q.num.toNat
-  apply Rat.ext
-  · aesop
-  · aesop
 
 lemma rat_den_one_is_nat_of_lt (q: ℚ) (h₁ : q.den = 1) (h₂ : 0 < q ) : ∃ n : ℕ, n = q := by
   use q.num.toNat
@@ -722,30 +704,20 @@ lemma rat_den_one_is_nat_of_lt (q: ℚ) (h₁ : q.den = 1) (h₂ : 0 < q ) : ∃
     exact h₂
   · aesop
 
--- lemma lem₄ (k₀ : ℕ) (x : ℚ) (h₁ : 1 < x) (h₂ : 0 < k₀) : k₀ < k₀ * x := by
---   calc ↑k₀
---     _= ↑k₀ * (1:ℚ) := by ring
---     _< ↑k₀ * x := by rel [h₁]
-
-
-lemma rat_den_unity_is_nat (q: ℚ) (h₁ : q.den = 1) (h₂ : 0 ≤ q ): ∃ n : ℕ, n = q := by
+lemma rat_den_one_is_nat (q: ℚ) (h₁ : q.den = 1) (h₂ : 0 ≤ q ): ∃ n : ℕ, n = q := by
   use q.num.toNat
   apply Rat.ext
   · aesop
   · aesop
 
-lemma rat_eq_self_num (q : ℚ) (hq : q.den = 1) : q = q.num := by
-  apply Rat.ext
-  · rfl
-  · simp_all only [Rat.intCast_den]
 
 lemma den_one_of_int_rat (a : ℤ) : (↑a : ℚ).den = 1 := by exact rfl
 
 -- ↑(k₀ * x - k₀).num.toNat * x).den = 1
 lemma rat_sub_den_one (q r : ℚ) (hq : q.den = 1) (hr : r.den = 1) :  (q - r).den = 1 := by
   -- establish that q and r can be lowered into the integers.
-  obtain ⟨q', hqz⟩ :=  rat_den_unity_is_int q hq
-  obtain ⟨r', hrz⟩ :=  rat_den_unity_is_int r hr
+  obtain ⟨q', hqz⟩ := rat_den_one_is_int q hq
+  obtain ⟨r', hrz⟩ := rat_den_one_is_int r hr
 
   -- establish that integers raised lifted into the rationals have den = 1
   have h₁ := den_one_of_int_rat (q' - r')
@@ -755,39 +727,23 @@ lemma rat_sub_den_one (q r : ℚ) (hq : q.den = 1) (hr : r.den = 1) :  (q - r).d
 
 lemma rat_mul_den_one (q r : ℚ) (hq : q.den = 1) (hr : r.den = 1) :  (q * r).den = 1 := by
   -- establish that q and r can be lowered into the integers.
-  obtain ⟨q', hqz⟩ :=  rat_den_unity_is_int q hq
-  obtain ⟨r', hrz⟩ :=  rat_den_unity_is_int r hr
+  obtain ⟨q', hqz⟩ := rat_den_one_is_int q hq
+  obtain ⟨r', hrz⟩ := rat_den_one_is_int r hr
 
-  -- establish that integers raised lifted into the rationals have den = 1
+  -- establish that integers lifted into the rationals have den = 1
   have h₁ := den_one_of_int_rat (q' * r')
 
   have h₂ : ↑(q' * r') = q * r := by aesop
   rw [←h₂]
   exact h₁
 
---lemma coerce_sub_dist (a b : ℕ) : ↑(a - b) = ↑a - ↑b := by rfl
-
--- theorem coerce_dist (a b : ℤ) (x : ℚ) : x * ↑(a - b) = x * (↑a - ↑b) := by
---   aesop
-
--- lemma q_is_q_num (q : ℚ) (h₁ : q.den = 1) : q = q.num := by
---   exact Eq.symm ((fun r ↦ (Rat.den_eq_one_iff r).mp) q h₁)
-
--- lemma int_is_nat (c : ℤ) (h: 0 < c) : ∃ n : ℕ, c = n := by
---   use c.toNat
---   simp_all only [Int.ofNat_toNat]
---   exact Eq.symm (max_eq_left_of_lt h)
-
-theorem not_rationals_have_lub_prop : ¬ ∃ x, IsLUB E x := by
+-- the rationals do not have the least upperbound property.
+theorem rats_not_complete : ¬ ∃ x, IsLUB E x := by
   by_contra hc
-  have hc₁ := hc
   obtain ⟨x, hx⟩ := hc
-  obtain ⟨hr₁, hr₂⟩ := rat_part_1 x hx
+  obtain ⟨hr₁, hr₂⟩ := lubp_part_1 x hx
   have hr₁ : 1 < x := by nlinarith
-  obtain ⟨hx₁, hx₂⟩ := hx
 
-
-  let m := x.num
   let n := x.den
   let S := {k : ℕ | (k * x).den = 1 ∧ 0 < k}
 
@@ -809,13 +765,12 @@ theorem not_rationals_have_lub_prop : ¬ ∃ x, IsLUB E x := by
   let k₁ := ↑k₀ * x - ↑k₀
 
   have hkq₂ : (k₀ * x).den = 1 := by
-    obtain ⟨hq₁, hq₂⟩ := hkq₁
+    obtain ⟨hq₁, _⟩ := hkq₁
     apply hq₁
 
   have hx₃ : x < 2 := by nlinarith
 
-  -- Then k₁ = k₀ * (x - 1) < k₀ * (2 - 1) = k₀
-  have hk₃ :=
+  have hk₃ : k₁ < k₀ :=
     calc k₁
       _= k₀ * x - k₀ := by rfl
       _= k₀ * (x - 1) := by ring
@@ -854,9 +809,9 @@ theorem not_rationals_have_lub_prop : ¬ ∃ x, IsLUB E x := by
       exact hk₃
 
 
-  -- But, x*k₁ = k₀*x^2 - x*k₀ = 2*k₀ - x*k₀ = k₀-k₁ ∈ ℕ → k₁ ∈ S
+  -- But, x*j = k₀*x^2 - x*k₀ = 2*k₀ - x*k₀ = k₀-j ∈ ℕ → k₁ ∈ S
   -- ! j < k₀
-  -- ! k₁ ∈ S
+  -- ! j ∈ S
   -- ! k₀ is not the least element in S.
 
   have hc₄ : j ∈ S := by
@@ -893,9 +848,7 @@ theorem not_rationals_have_lub_prop : ¬ ∃ x, IsLUB E x := by
 
   contradiction
 
-
 end q_no_lubp
-
 
 
 
