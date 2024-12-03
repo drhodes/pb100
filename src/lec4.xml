@@ -4,4 +4,13 @@
 	  <div> TODO </div>
 	</page>
   </lecture>
+
+
+
+  <!-- # Linear ordered (semi)fields
+
+A linear ordered (semi)field is a (semi)field equipped with a linear order such that
+* addition respects the order: `a ≤ b → c + a ≤ c + b`;
+* multiplication of positives is positive: `0 < a → 0 < b → 0 < a * b`;
+* `0 < 1`. -->
 </div>
