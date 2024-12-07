@@ -147,20 +147,11 @@ lemma lubp_part_1 (x : ℝ) : IsLUB E x → x^2 = 2 := by
 -- Theorem 12
 -- ∃! r ∈ R such that r > 0 and r^2 = 2. In other words, √2 ∈ R but √2 ∉ Q.
 
-
-
 -- step 1. E is bounded above (by 2 for instance),
 -- step 2. establish that r := sup E, r ∈ ℝ
 -- step 3. Show that 0 < r
 -- step 4. Show that r^2 = 2.
 
--- We now prove uniqueness.
--- step 5. Suppose that there is a p > 0 with p^2 = 2.
---         Then, since (r + p) > 0,
--- 0 = r^2 − p^2
---   = (r + p)(r − p)
---   → r − p = 0
---   → r = p.
 
 lemma step00 : 2 ∈ upperBounds E := by
   refine mem_upperBounds.mpr ?_
@@ -169,7 +160,6 @@ lemma step00 : 2 ∈ upperBounds E := by
 
 lemma step01 : 1 ∈ E := by simp [E]
 lemma step02 : E.Nonempty := nonempty_of_mem step01
-
 lemma step1 : BddAbove E := nonempty_of_mem step00
 
 lemma step2 : ∃ r, IsLUB E r := by
@@ -187,7 +177,6 @@ lemma step3 (r : ℝ) (h : IsLUB E r) : 0 < r := by
   apply this
   apply h₁
   norm_num
-
 
 lemma step4 (r : ℝ) (h : IsLUB E r) : r^2 = 2 := by
   -- reuse your result from Lecture 3, but change ℚ to ℝ

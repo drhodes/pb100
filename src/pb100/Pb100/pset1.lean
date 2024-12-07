@@ -1,9 +1,4 @@
 import Mathlib
-import Mathlib.Tactic
-import Mathlib.Tactic.Basic
-import Mathlib.Data.Set.Basic
-import Mathlib.Data.Real.EReal
-
 
 open Set Function
 

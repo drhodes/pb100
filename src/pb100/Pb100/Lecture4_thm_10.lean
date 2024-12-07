@@ -19,7 +19,7 @@ open Set
 -- 4. Then, ∀x ∈ A, −x ≤ c ⇒ ∀x ∈ A, −c ≤ x.
 -- 5. Hence, −c is a lower bound for A.
 -- 6. We have also shown that if a is a lower bound for A, then −a is an upper bound for -A.
--- 7. Therefore, c ≤ −a since c = sup -A =⇒ a ≤ −c.
+-- 7. Therefore, c ≤ −a since c = sup -A ⇒ a ≤ −c.
 -- 8. Hence, −c is the greatest lower bound for A.
 
 -- Let F be an ordered field with the least upper bound property.
@@ -33,7 +33,6 @@ variable (A : Set F)
 
 -- 2. Then, ∀x ∈ A, −x ≤ −a ⇒ −a is an upper bound for -A.
 lemma step2 (a : F) (ha : a ∈ lowerBounds A) : -a ∈ upperBounds (-A) := by
-  simp [mem_def, upperBounds]
   intro v hv
   exact le_neg_of_le_neg (ha hv)
 
@@ -44,7 +43,7 @@ lemma step3 (h₁ : (-A).Nonempty) (H : BddAbove (-A)): ∃ c, IsLUB (-A) c  := 
 
 -- 4. Then, ∀x ∈ A, −x ≤ c ⇒ ∀x ∈ A, −c ≤ x.
 lemma step4 (c : F) : ∀ x ∈ A, -x ≤ c → -c ≤ x := by
-  intro x hx₁ hx₂
+  intro x _ hx
   linarith
 
 -- 5. Hence, −c is a lower bound for A.
