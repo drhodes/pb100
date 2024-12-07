@@ -8,20 +8,6 @@ namespace Lecture4
 variable (F : Type*)
 variable [LinearOrderedField F]
 
-
--- --theorem a1 If 𝑥 ∈ 𝐹 and 𝑦 ∈ 𝐹, then 𝑥 + 𝑦 ∈ 𝐹.
--- theorem a2 (commutativity of addition) 𝑥 + 𝑦 = 𝑦 + 𝑥 for all 𝑥, 𝑦 ∈ 𝐹.
--- theorem a3 (associativity of addition) (𝑥 + 𝑦) + 𝑧 = 𝑥 + (𝑦 + 𝑧) for all 𝑥, 𝑦, 𝑧 ∈ 𝐹.
--- theorem a4 There exists an element 0 ∈ 𝐹 such that 0 + 𝑥 = 𝑥 for all 𝑥 ∈ 𝐹.
--- theorem a5 For every element 𝑥 ∈ 𝐹, there exists an element −𝑥 ∈ 𝐹 such that 𝑥 + (−𝑥) = 0.
--- theorem a1 If 𝑥 ∈ 𝐹 and 𝑦 ∈ 𝐹, then 𝑥𝑦 ∈ 𝐹.
--- theorem a2 (commutativity of multiplication) 𝑥𝑦 = 𝑦𝑥 for all 𝑥, 𝑦 ∈ 𝐹.
--- theorem a3 (associativity of multiplication) (𝑥𝑦)𝑧 = 𝑥(𝑦𝑧) for all 𝑥, 𝑦, 𝑧 ∈ 𝐹.
--- theorem a4 There exists an element 1 ∈ 𝐹 (and 1 ≠ 0) such that 1𝑥 = 𝑥 for all 𝑥 ∈ 𝐹.
--- theorem a5 For every 𝑥 ∈ 𝐹 such that 𝑥 ≠ 0 there exists an element 1/𝑥 ∈ 𝐹 such that 𝑥(1/𝑥) = 1.
--- theorem d1 (distributive law) 𝑥(𝑦 + 𝑧) = 𝑥𝑦 + 𝑥𝑧 for all 𝑥, 𝑦, 𝑧 ∈ 𝐹
-
-
 -- ------------------------------------------------------------
 section proposition_1_1_8
 
