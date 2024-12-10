@@ -77,7 +77,6 @@ lemma this_inf (h : A.Nonempty) : ∃ x, IsGLB (↑A : Set α) x := by
 end ex_1_1_2
 
 
-
 -- --------------------------------------------------------------------------
 section ex_1_1_5
 
@@ -102,7 +101,6 @@ example (h₁ : b ∈ upperBounds A) (h₂ : b ∈ A) : IsLUB A b := by
 end ex_1_1_5
 
 
-
 -- --------------------------------------------------------------------------
 section ex_1_1_6
 
@@ -111,30 +109,28 @@ section ex_1_1_6
 -- countably infinite subset
 
 variable {α : Type} [LinearOrder α]
-variable (m : α) (A : Set α)
+variable (m : α) (A B : Set α)
 
--- Can the set A contain only 1 element? No, because that element would be sup.
--- Could A have uncountably infinite number of elements? No, for the same
--- reason.
+-- Could A contain only 1 element? No, because that element would be sup.
 
 -- Gut feeling? Somewhere in the definition of one of the upperbound
 -- inequalities, the ≤ breaks down, it is either < or =, however it can't be =
 -- because that would mean m is in A, so < remains, which will prove that m ∉ A.
 
-example (h₁ : A.Nonempty) (h₂ : BddAbove A) (h₃ : IsLUB A m) (h₄ : m ∉ A) :
-  Nat.card A = 0 := by
+example (h₁ : A.Nonempty) (h₂ : BddAbove A) (h₃ : IsLUB A m) (h₄ : m ∉ A)
+    (h₅ : B ⊆ A) : Nat.card B = 0 := by
   --
-  rw [Nat.card_eq_zero]
+  --rw [Nat.card_eq_zero]
+  dsimp [Set.subset_def] at h₅
+
+
   simp [IsLUB, IsLeast, upperBounds, lowerBounds] at h₃
   obtain ⟨hl₁, hl₂⟩ := h₃
   have hm₁ := @hl₁ m
   left
   sorry
 
-
-
 end ex_1_1_6
-
 
 
 -- --------------------------------------------------------------------------
@@ -161,16 +157,14 @@ lemma step_ne (h : x ≠ y) {hx : 0 < x} {hy : 0 < y} : √ (x * y) < (x + y) / 
 lemma step_eq (h : x = y) {hx : 0 < x} {hy : 0 < y} : √ (x * y) = (x + y) / 2 := by
   rw [h]
   norm_num
-  rw [Real.sqrt_eq_iff_mul_self_eq_of_pos]
+  rw [Real.sqrt_eq_iff_mul_self_eq_of_pos] -- √x = y ↔ y * y = x
   exact hy
-
 
 example (hx : 0 < x) (hy : 0 < y) : √ (x * y) ≤ (x + y) / 2 := by
   rw [le_iff_lt_or_eq]
   cases eq_or_ne x y with
   | inr h => left; exact @step_ne x y h hx hy
   | inl h => right ; exact @step_eq x y h hx hy
-
 
 end ex_1_2_7
 
@@ -227,13 +221,6 @@ lemma c_bdd (h₁ : bdd A) (h₂ : bdd B) : bdd (C A B) := by
   · exact c_bdd_below h₁.left h₂.left
   · exact c_bdd_above h₁.right h₂.right
 
-lemma l₁ (x y z : ℝ) : x ≤ z - y → x + y ≤ z:= by
-  intro h
-  linarith
-
-lemma l₂ (x y z : ℝ) : x + y ≤ z  →  x ≤ z - y := by
-  intro h
-  linarith
 
 -- part 2. Show that sup 𝐶 = sup 𝐴 + sup 𝐵
 example (x y z : ℝ) (h₁ : IsLUB A x) (h₂ : IsLUB B y) (h₃ : IsLUB (C A B) z) : z = x + y := by
@@ -245,13 +232,10 @@ example (x y z : ℝ) (h₁ : IsLUB A x) (h₂ : IsLUB B y) (h₃ : IsLUB (C A B
 
   constructor
   · -- z ≤ x + y
-    dsimp [C, upperBounds, lowerBounds, Set.prod] at *
     have hh₃ := @hz₂ (x + y)
     apply hh₃
     intro t ht
-    obtain ⟨p, hp⟩ := ht
-    obtain ⟨hp₁, hp₂⟩ := hp
-    obtain ⟨hpp₁, hpp₂⟩ := hp₁
+    obtain ⟨p, ⟨⟨hpp₁, hpp₂⟩, hp₂⟩⟩ := ht
     have hh₁ := @hx₁ p.1 hpp₁
     have hh₂ := @hy₁ p.2 hpp₂
     rw [←hp₂]
@@ -259,8 +243,9 @@ example (x y z : ℝ) (h₁ : IsLUB A x) (h₂ : IsLUB B y) (h₃ : IsLUB (C A B
 
   · -- x + y ≤ z
     dsimp [C, upperBounds, lowerBounds, Set.prod] at *
-    have hh₁ := @hx₂ (z - y) -- ok this is on the right track
-    apply l₁
+    have hh₁ := @hx₂ (z - y)
+    have : x ≤ z - y → x + y ≤ z := by intro h; linarith
+    apply this
     apply hh₁
     intro v hv
 
@@ -277,6 +262,45 @@ example (x y z : ℝ) (h₁ : IsLUB A x) (h₂ : IsLUB B y) (h₃ : IsLUB (C A B
     use (v, w)
 
 -- part 3. Show that inf 𝐶 = inf 𝐴 + inf 𝐵
+example (x y z : ℝ) (h₁ : IsGLB A x) (h₂ : IsGLB B y) (h₃ : IsGLB (C A B) z) : z = x + y := by
+  obtain ⟨hx₁, hx₂⟩ := h₁
+  obtain ⟨hy₁, hy₂⟩ := h₂
+  obtain ⟨hz₁, hz₂⟩ := h₃
+
+  rw [le_antisymm_iff]
+
+  constructor
+  · -- x + y ≤ z
+    dsimp [C, upperBounds, lowerBounds, Set.prod] at *
+
+    have hh₁ := @hx₂ (z - y) -- ok this is on the right track
+    have : z - y ≤ x → z ≤ x + y := by intro h; linarith
+    apply this
+    apply hh₁
+    intro v hv
+
+    have hh₂ := @hy₂ (-v + z)
+    have : -v + z ≤ y → z - y ≤ v := by intro h; linarith
+    apply this
+    apply hh₂
+    intro w hw
+
+    have : z ≤ v + w → -v + z ≤ w := by intro h; linarith
+    apply this
+    apply @hz₁ (v + w)
+
+    use (v, w)
+
+  · -- z ≤ x + y
+    have hh₃ := @hz₂ (x + y)
+    apply hh₃
+    intro t ht
+    obtain ⟨p, ⟨⟨hpp₁, hpp₂⟩, hp₂⟩⟩ := ht
+    have hh₁ := @hx₁ p.1 hpp₁
+    have hh₂ := @hy₁ p.2 hpp₂
+    rw [←hp₂]
+    rel [hh₁, hh₂]
+
 
 
 end ex_1_2_9
