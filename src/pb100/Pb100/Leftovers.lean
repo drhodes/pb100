@@ -40,3 +40,17 @@ lemma lt_cube_of_one_lt (r : ℝ) (hr : 1 < r ^ 3) : 1 < r := by
 
   nlinarith
   nlinarith
+
+
+example : IsLeast {x : ℕ | 0 ≤ x} 0 := by
+  constructor
+  · norm_num
+  · --
+    dsimp [lowerBounds]
+    intro a ha
+    exact ha
+
+example : IsLeast (Set.univ : Set ℕ) 0 :=
+  ⟨Set.mem_univ 0, λ a _ => Nat.zero_le a ⟩
+
+example : IsLeast (Set.univ : Set ℕ) 0 := by aesop
