@@ -41,6 +41,7 @@ lemma lt_cube_of_one_lt (r : ℝ) (hr : 1 < r ^ 3) : 1 < r := by
   nlinarith
   nlinarith
 
+lemma sufficient₁ (r : ℝ) : 1 < r → 1 < r ∨ 1 = r := by sorry
 
 example : IsLeast {x : ℕ | 0 ≤ x} 0 := by
   constructor

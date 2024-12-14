@@ -3,6 +3,7 @@ import Mathlib.Tactic.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Data.Real.EReal
 
+set_option autoImplicit true
 
 def inj (A: Set α) (B: Set β) (f: α→β) := ∀x ∈ A, ∀y ∈ A, (f x ∈ B) ∧ (f y ∈ B) ∧ f x = f y → x = y
 def sur (A: Set α) (B: Set β) (f: α→β) := ∀y ∈ B, ∃x ∈ A, f x ∈ B ∧ f x = y
@@ -96,28 +97,30 @@ example : card_eq {n | n : ℤ} {2*n - 1 | n : ℤ} := by
     · exact hm
 
 
-lemma part1 (q: ℚ) (h₁: 0 < q) (h₂: q.den = 1) (h₃: q ≠ 1) : by
-  have hn : q.num.toNat ≠ 0 := by aesop
-  have h₄ := Nat.prod_primeFactorsList q.num.toNat
+-- lemma part1 (q: ℚ) (h₁: 0 < q) (h₂: q.den = 1) (h₃: q ≠ 1) : by
+--   have hn : q.num.toNat ≠ 0 := by aesop
+--   have h₄ := Nat.prod_primeFactorsList q.num.toNat
 
 
-  sorry
+--   sorry
 
 
 
-example : card_eq {q : ℚ | ∃ q : ℚ, q > 0} {n | n : ℕ} := by
-  sorry
+-- example : card_eq {q : ℚ | ∃ q : ℚ, q > 0} {n | n : ℕ} := by
+--   sorry
 
 
-  constructor
-  · -- injective
-    dsimp [inj]
-    intro x hx y hy hs
-    obtain ⟨h₁, h₂, h₃⟩ :=  hs
+--   constructor
+--   · -- injective
+--     dsimp [inj]
+--     intro x hx y hy hs
+--     obtain ⟨h₁, h₂, h₃⟩ :=  hs
 
 
-  · done
+--   · done
 
+
+/-
 
 variable (x: ℝ)
 
@@ -371,3 +374,5 @@ example: c ≥ -1 → ∀n, P (n+1) c := by
       _ ≥ 1 + (k + 2)*c := by nlinarith
     done
   }
+
+-/
