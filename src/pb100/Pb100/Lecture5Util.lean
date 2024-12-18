@@ -46,4 +46,40 @@ example : real_nat (1 : ℝ) := by
   ring
 
 
+
+-- Proof :
+-- step1) If n ∈ ℕ and 0 < n, then: 1 - 1/n < 1 → 1 ∈ upperBounds S.
+-- Suppose that x is an upper bound for S.
+-- We now prove that x ≥ 1.
+-- For the sake of contradiction, assume that x < 1.
+-- By the Archimedean property, there exists an n ∈ ℕ
+-- such that 1 < n * (1 − x).
+
+-- Therefore, ∃n ∈ N such that x < 1 − 1/n.
+-- Hence, x is not an upper bound for the set S if x < 1.
+-- Thus, if x is an upper bound, x ≥ 1.
+-- Therefore: sup S = 1
+
+example (a b : ℝ) : a - 1 < b ↔ a < b + 1  := by exact sub_lt_iff_lt_add
+
+-- TODO, find a basic proof for this.
+-- maybe get better at using ceil?  Ceil Training.
+example : ∀ (x : ℝ), ∃ n : ℕ, x < n := by
+  intro x
+  obtain h | h | h := lt_trichotomy x 0
+  · use 0
+    norm_cast
+  · use 1
+    norm_cast
+    rw [h]
+    norm_num
+  · --
+    use ⌈x⌉.toNat + 1
+    simp_all only [Nat.cast_add, Nat.cast_one]
+    rw [←sub_lt_iff_lt_add]
+    sorry
+    -- def.  An expression is known as recalcitrant if it has more than one coercive
+    -- function applied to it. example (↑x).toNat
+
+
 end Lecture5
