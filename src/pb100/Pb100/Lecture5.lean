@@ -6,11 +6,33 @@ namespace Lecture5
 
 open Set Functor
 
+
+namespace thm_2
+
+
+
+-- · 0 ≤ x < y,
+-- · x < 0 < y, and
+-- · x < y ≤ 0.
+
+
+theorem density_of_rationals (x y : ℝ) (hx : x < y) : ∃ r : ℚ, x < ↑r ∧ ↑r < y := by
+  let m := (x + y) / 2
+  obtain h | h | h := lt_trichotomy m 0
+  · done
+  · done
+  · done
+
+end thm_2
+
+
+
+
 namespace thm_3
 
 def S : Set ℝ := {1 - 1 / n | n > 0 }
 
-lemma step3 (x : ℝ) (hx : x < 1) : ∃ m, 0 < (m:ℕ) ∧ x < 1 - 1 / m := by
+lemma step2 (x : ℝ) (hx : x < 1) : ∃ m, 0 < (m:ℕ) ∧ x < 1 - 1 / m := by
   have ha := Real.instArchimedean
   rw [archimedean_iff_nat_lt] at ha
 
@@ -22,7 +44,7 @@ lemma step3 (x : ℝ) (hx : x < 1) : ∃ m, 0 < (m:ℕ) ∧ x < 1 - 1 / m := by
 
   have h₂ : 1 < p * (1 - x) := by exact (mul_inv_lt_iff₀ hx₁).mp hp
   have pos₁ : 0 < 1 - x := by nlinarith
-  have pos₂ : 0 < (1:ℝ) := by norm_num
+  have pos₂ : (0:ℝ) < 1 := by norm_num
   have pos₃ : (0:ℝ) < p := by
     have := pos_of_lt_mul pos₂ pos₁ h₂
     aesop
@@ -34,9 +56,9 @@ lemma step3 (x : ℝ) (hx : x < 1) : ∃ m, 0 < (m:ℕ) ∧ x < 1 - 1 / m := by
     nlinarith
   · linarith
 
-lemma step2 (x : ℝ) (h: x < 1) : x ∉ upperBounds S := by
+lemma step1 (x : ℝ) (h: x < 1) : x ∉ upperBounds S := by
   simp [S, upperBounds]
-  have ⟨m, h₁, h₂⟩ := step3 x h
+  have ⟨m, h₁, h₂⟩ := step2 x h
   use m
   constructor
   · simpa
@@ -54,13 +76,10 @@ theorem theorem_3 : IsLUB S 1 := by
     intro x hx
     by_contra hc
     push_neg at hc
-    have := step2 x hc
+    have := step1 x hc
     contradiction
-
 
 end thm_3
 
-
---theorem thm_3 :
 
 end Lecture5
