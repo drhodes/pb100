@@ -31,22 +31,6 @@ example (x y : ℝ) (h : 0 < x) : ∃ n : ℕ, y ≤ n * x := by
   use n
   rwa [← nsmul_eq_mul n x]
 
-def real_rat (r : ℝ) := ∃ q : ℚ , r = q
-def real_nat (r : ℝ) := ∃ n : ℕ , r = n
-def real_int (r : ℝ) := ∃ z : ℤ , r = z
-
-example : real_rat (1/2 : ℝ) := by
-  unfold real_rat
-  use 1 / 2
-  ring
-
-example : real_nat (1 : ℝ) := by
-  unfold real_nat
-  use 1
-  ring
-
-
-
 -- Proof :
 -- step1) If n ∈ ℕ and 0 < n, then: 1 - 1/n < 1 → 1 ∈ upperBounds S.
 -- Suppose that x is an upper bound for S.
