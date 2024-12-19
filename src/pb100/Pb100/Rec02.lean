@@ -63,7 +63,7 @@ lemma part1 : bdd X := by
     · linarith
 
 
-theorem find_good_ε (r : ℝ) (h₀ : IsLUB X r) (hc : 2 < r ^ 3) (hr₁ : 0 < r) (hr₂ : 1 < r) :
+theorem find_good_ε₁ (r : ℝ) (h₀ : IsLUB X r) (hc : 2 < r ^ 3) (hr₁ : 0 < r) (hr₂ : 1 < r) :
   ∃ ε, 0 < ε ∧ 2 ≤ r ^ 3 - 3 * r ^ 2 * ε := by
   --
 
@@ -128,7 +128,7 @@ lemma step21 (r : ℝ) (h₀ : IsLUB X r) : r ^ 3 ≤ 2 := by
   -- However, we still need to make this proof more formal by explicitly saying
   -- what h is. to do this, consider the following:
 
-  obtain ⟨ε, ⟨hh₀, hh⟩⟩ := find_good_ε r h₀ hc hr₂ hr₁
+  obtain ⟨ε, ⟨hh₀, hh⟩⟩ := find_good_ε₁ r h₀ hc hr₂ hr₁
 
   -- † notice that if we can find an ε such that 0 < r ^ 3 - 3 * r ^ 2 * ε then
   -- we will have 2 < (r - ε) ^ 3, which would be a contradiction
@@ -172,7 +172,7 @@ lemma step21 (r : ℝ) (h₀ : IsLUB X r) : r ^ 3 ≤ 2 := by
   contradiction
 
 
-lemma asdfasdf (r : ℝ) (h₀ : IsLUB X r) : 1 < r := by
+lemma one_lt_r (r : ℝ) (h₀ : IsLUB X r) : 1 < r := by
   obtain ⟨h₁, _⟩ := h₀
   dsimp [upperBounds] at h₁
   have hx : (10/9) ∈ X := by
@@ -189,7 +189,7 @@ theorem find_good_ε₂ (r : ℝ) (h₀ : IsLUB X r) (hc : r ^ 3 < 2)
   let α := ω / (k * r ^ 2)
   use α
 
-  have hr₁ : 1 < r := asdfasdf r h₀
+  have hr₁ : 1 < r := one_lt_r r h₀
   have hr₂ : 0 < r := by linarith
   have hω  : 0 < ω := by dsimp [ω]; linarith
   have ok₁ : 0 < α := by dsimp [α]; aesop
@@ -199,23 +199,22 @@ theorem find_good_ε₂ (r : ℝ) (h₀ : IsLUB X r) (hc : r ^ 3 < 2)
   · exact ok₁
   · -- (r + α) ^ 3 < 2
 
-    have need₁ : α < r := by
+    have hα : α < r := by
       dsimp [α, ω]
       have : 0 < (10 * r ^ 2) := by aesop
       rw [div_lt_iff₀ this]
       nlinarith
 
     have piece₁ : 3 * (r * α ^ 2) < 3 * (r ^ 2 * α) := by
-      -- clean up with calc block?
       calc 3 * (r * α ^ 2)
         _= 3 * (r * α * α) := by ring
-        _< 3 * (r * r * α) := by rel [need₁]
-        _= 3 * (r ^2 * α) := by ring
+        _< 3 * (r * r * α) := by rel [hα]
+        _= 3 * (r ^ 2 * α) := by ring
 
     have piece₂ : α ^ 3 < 3 * r ^ 2 * α := by
       calc α ^ 3
         _= α * α * α := by ring
-        _< r * r * α := by rel [need₁]
+        _< r * r * α := by rel [hα]
         _= 1 * r ^ 2 * α := by ring
         _< 3 * r ^ 2 * α := by
           have : 1 < (3:ℝ) := by norm_num
@@ -252,14 +251,14 @@ theorem step22 (r : ℝ) (h₀ : IsLUB X r) : 2 ≤ r ^ 3 := by
    -- Assume for the sake of contradiction that r ^ 3 < 2.
   by_contra hc
   push_neg at hc
-  have ⟨h₁, h₂⟩ := h₀
+  have ⟨h₁, _⟩ := h₀
 
   obtain ⟨ε, ⟨hε₁, hε₂⟩⟩ := find_good_ε₂ r h₀ hc
 
   -- now we have an element (sup + ε) in the Set X but is greater than the
   -- sup r?
   have hr : 0 < r := by
-    have := asdfasdf r h₀
+    have := one_lt_r r h₀
     linarith
 
   have h₀' : r + ε ∈ X ∧ r + ε ∈ upperBounds X := by

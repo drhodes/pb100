@@ -2,6 +2,28 @@ import Mathlib
 
 namespace Lecture5
 
+lemma lt_quintchotomy {α : Type*} [LinearOrder α] (x y p : α) (hx : x < y) :
+  (p = x ∧ x < y) ∨
+  (p < x ∧ x < y) ∨
+  (x < p ∧ p < y) ∨
+  (x < y ∧ y = p) ∨
+  (x < y ∧ y < p) := by
+  --
+  have := lt_trichotomy x p
+  have := lt_trichotomy y p
+  repeat tauto
+
+lemma le_quintchotomy {α : Type*} [LinearOrder α] (x y p : α) (hx : x < y) :
+  (p ≤ x ∧ x < y) ∨
+  (x < p ∧ p < y) ∨
+  (x < y ∧ y ≤ p) := by
+  --
+  repeat rw [le_iff_lt_or_eq]
+  have := lt_trichotomy x p
+  have := lt_trichotomy y p
+  repeat tauto
+
+
 example (a b : ℝ) (ha : 0 < a) (hb : 0 < b) : 0 < a / b := by exact div_pos ha hb
 example (z : ℝ) (ha : z ≠ 0) : (z⁻¹) * z = 1 := by exact inv_mul_cancel₀ ha
 

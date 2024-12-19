@@ -120,14 +120,13 @@ variable (m : α) (A B : Set α)
 example (h₁ : A.Nonempty) (h₂ : BddAbove A) (h₃ : IsLUB A m) (h₄ : m ∉ A)
     (h₅ : B ⊆ A) : Nat.card B = 0 := by
   --
-  --rw [Nat.card_eq_zero]
   dsimp [Set.subset_def] at h₅
 
 
   simp [IsLUB, IsLeast, upperBounds, lowerBounds] at h₃
   obtain ⟨hl₁, hl₂⟩ := h₃
   have hm₁ := @hl₁ m
-  left
+  -- TODO, redo lecture 1 with Mathlib cardinality definitions.
   sorry
 
 end ex_1_1_6
@@ -152,9 +151,11 @@ lemma lem1 (a b : ℝ) : 2 * a < b ↔ a < b / 2 := by
 
 lemma step_ne (h : x ≠ y) {hx : 0 < x} {hy : 0 < y} : √ (x * y) < (x + y) / 2 := by
   rw [← lem1]
+  -- proved by hand
+  -- see notes: 2024-12-14-Note-14-37.xoj
   sorry
 
-lemma step_eq (h : x = y) {hx : 0 < x} {hy : 0 < y} : √ (x * y) = (x + y) / 2 := by
+lemma step_eq (h : x = y) {hy : 0 < y} : √ (x * y) = (x + y) / 2 := by
   rw [h]
   norm_num
   rw [Real.sqrt_eq_iff_mul_self_eq_of_pos] -- √x = y ↔ y * y = x
@@ -164,7 +165,7 @@ example (hx : 0 < x) (hy : 0 < y) : √ (x * y) ≤ (x + y) / 2 := by
   rw [le_iff_lt_or_eq]
   cases eq_or_ne x y with
   | inr h => left; exact @step_ne x y h hx hy
-  | inl h => right ; exact @step_eq x y h hx hy
+  | inl h => right ; exact @step_eq x y h hy
 
 end ex_1_2_7
 
