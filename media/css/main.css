@@ -1,9 +1,21 @@
 body {
     font-family: Inter;
-    font-size: 15pt;
+    font-size: 14pt;
     margin: auto;
     background-color: #efefe8;
     color: #333;
+}
+
+code {
+    background-color: #333;
+    color: #efefe8;
+}
+
+pre {
+    padding: 10px;
+    font-size: 13pt;
+    background-color: #333;
+    color: #efefef;
 }
 
 .katex { font-size: 1.2em !important; } 
@@ -114,12 +126,10 @@ body {
 }
 
 .proof-gap {
-    padding-left: .7em;
     padding-right: .7em;
 }
 
 .theorem-number {
-    padding-left: .7em;
     padding-right: .7em;
     font-weight: bold;
 }
@@ -156,9 +166,12 @@ hr {
 .scribe {    
     font-size: .8em;
     background-color: #eee;
-    border-left: 1px solid black;
-    padding-left: 10px;
+    border-left: 2px solid black;
     margin-top: 20px;
+    margin-bottom: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
 }
 
 .scribe-note {
@@ -251,6 +264,7 @@ iframe.vidframe {
 
 .fig {
     margin: 20px;
+    mix-blend-mode: multiply; /* Combines with the body's background color */
 }
 
 .fig-text {

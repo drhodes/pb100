@@ -53,13 +53,17 @@ ${BUILD}/lectures/lec1.html: venv ./src/lec1.html ${MACROS} ${LECTURE_BUILD_DIR}
 
 	sed -i '1s/^/<!DOCTYPE html>\n/' ${BUILD}/lectures/lec1.html
 
+.PHONY: tidy
+tidy:	
+	tidy -q -e ${BUILD}/lectures/lec1.html
+
 
 .PHONY: lec2
 lec2: ${BUILD}/lectures/lec2.html
-${BUILD}/lectures/lec2.html: venv ./src/lec2.xml ${MACROS} ${LECTURE_BUILD_DIR}
+${BUILD}/lectures/lec2.html: venv ./src/lec2.html ${MACROS} ${LECTURE_BUILD_DIR}
 	${VENV} auxml singlefile \
 	--macros ./src/macros.xml \
-	--infile ./src/lec2.xml \
+	--infile ./src/lec2.html \
 	--outfile ${BUILD}/lectures/lec2.html
 
 	sed -i '1s/^/<!DOCTYPE html>\n/' ${BUILD}/lectures/lec2.html
