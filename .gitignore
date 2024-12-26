@@ -1,6 +1,0 @@
-src/lean
-src/plugins
-src/lean-proofs/LeanInk/
-.venv
-venv/
-src/pb100/.lake
