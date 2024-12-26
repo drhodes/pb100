@@ -16,9 +16,6 @@ lemma density1 (x y : ℝ) (h : 0 ≤ x ∧ x < y) : ∃ r : ℚ, x < r ∧ r < 
 
   let S : Set ℕ := {k : ℕ | n * x < k}
 
-  -- another way to get a least element is to determine that S is bounded below.
-  -- S has a least element: m.
-
   have hs : S.Nonempty := by aesop
   have ⟨hs₁, hs₂⟩ := isLeast_csInf hs
   let m := sInf S
@@ -28,7 +25,7 @@ lemma density1 (x y : ℝ) (h : 0 ≤ x ∧ x < y) : ∃ r : ℚ, x < r ∧ r < 
       _< 1 / (y - x) := by aesop
       _< n := hn
   have : n * x < m := by aesop
-  have hm₁ : m ≠ 0 := by aesop -- huge step!
+  have hm₁ : m ≠ 0 := by aesop -- important!
   have hm : 0 ≤ m := by aesop
   have hm₂ : 0 < m := by exact Nat.zero_lt_of_ne_zero hm₁
 
@@ -93,10 +90,7 @@ theorem density_of_rationals (x y : ℝ) (hx : x < y) : ∃ r : ℚ, x < ↑r �
   · -- x < y ∧ y ≤ 0
     exact density2 x y h
 
-
-
 end thm_2
-
 
 
 namespace thm_3
@@ -159,5 +153,149 @@ theorem theorem_3 : IsLUB S 1 := by
 
 end thm_3
 
+
+namespace abs_koan
+
+#check abs
+
+variable (x y : ℝ)
+
+-- Memorize these lemmas
+
+example {x : ℝ} (h : 0 ≤ x) : |x| = x := abs_of_nonneg h
+example {x : ℝ} (h : x ≤ 0) : |x| = -x := abs_of_nonpos h
+example {x : ℝ} (h : 0 < x) : |x| = x := abs_of_pos h
+example {x : ℝ} (h : x < 0) : |x| = -x := abs_of_neg h
+example {x : ℝ} : |x| = 0 ↔ x = 0 := abs_eq_zero
+example : |(0:ℝ)| = 0 := by exact abs_zero
+
+
+theorem t1 : 0 ≤ |x| ∧ |x| = 0 ↔ x = 0 := by
+  constructor
+  · intro ⟨h₁, h₂⟩
+    rwa [abs_eq_zero] at h₂
+  · intro h
+    constructor
+    · rw [h, abs_zero]
+    · rw [h, abs_zero]
+
+theorem t2 : |-x| = |x| := by
+  obtain h | h := le_or_lt x 0
+  · rw [abs_of_nonpos h]
+    have hx : 0 ≤ -x := by linarith
+    rw [abs_of_nonneg hx]
+  · --
+    rw [abs_of_pos h]
+    have hx : -x < 0 := by linarith
+    rw [abs_of_neg hx, neg_neg]
+
+
+example : |x * y| = |x| * |y| := abs_mul x y
+
+theorem t3 (x y : ℝ): |x * y| = |x| * |y| := by
+  obtain hx | hx | hx := lt_trichotomy x 0
+  · obtain hy | hy | hy := lt_trichotomy y 0
+    · --
+      rw [abs_of_neg hx];
+      rw [abs_of_neg hy];
+      rw [abs_of_pos];
+      ring
+      exact mul_pos_of_neg_of_neg hx hy
+
+    · rw [hy]
+      simp
+
+    · --
+      rw [abs_of_neg hx];
+      rw [abs_of_pos hy];
+      rw [abs_of_neg];
+      linarith
+      exact mul_neg_of_neg_of_pos hx hy
+
+  · rw [hx]
+    simp
+  · obtain hy | hy | hy := lt_trichotomy y 0
+    · rw [abs_of_pos hx];
+      rw [abs_of_neg hy];
+      rw [abs_of_neg];
+      ring
+      exact mul_neg_of_pos_of_neg hx hy
+
+    · rw [hy]; simp
+    · rw [abs_of_pos hx];
+      rw [abs_of_pos hy];
+      rw [abs_of_pos];
+      positivity
+
+
+lemma l4  (x : ℝ) : |x * x| = x * x := by
+  rw [t3]
+  obtain h | h | h := lt_trichotomy x 0
+  · repeat rw [abs_of_neg]
+    ring; exact h
+  · rw [h]; simp
+  · repeat rw [abs_of_pos]; exact h
+
+theorem t4 : |x ^ 2| = x ^ 2 ∧ x ^ 2 = |x| ^ 2 := by
+  rw [pow_two x, pow_two |x|]
+  constructor
+  · apply l4
+  · -- reuse l4
+    rw [←t3]
+    symm
+    apply l4
+
+theorem t5' : |x| ≤ y ↔ -y ≤ x ∧ x ≤ y := by
+  obtain h | h := le_or_lt x 0
+  constructor
+  · intro h₁
+    constructor
+    · rw [abs_of_nonpos h] at h₁
+      linarith
+    · rw [abs_of_nonpos h] at h₁
+      linarith
+  · intro ⟨h₁, h₂⟩
+    rw [abs_of_nonpos h]
+    linarith
+  constructor
+  · intro h₁
+    rw [abs_of_pos h] at h₁
+    constructor
+    · linarith
+    · linarith
+  · intro ⟨h₁, h₂⟩
+    rw [abs_of_pos h]
+    exact h₂
+
+theorem t6 : x ≤ |x| := by
+  obtain h | h := le_or_lt x 0
+  · rw [abs_of_nonpos h]
+    linarith
+  · rw [abs_of_pos h]
+
+example : |x * y| ≤ |x| * |y| := by
+  rw [le_iff_lt_or_eq]
+  right
+  apply t3
+
+example : |x * y| ≤ |x| * |y| := by
+  rw [le_iff_lt_or_eq]
+  right
+  apply t3
+
+example (x y : ℝ) : |x - y| = |y - x| := by
+  obtain h | h | h := lt_trichotomy (x - y) 0
+  · have h₁ : 0 ≤ y - x := by linarith
+    rw [abs_of_nonneg h₁, abs_of_neg h]
+    linarith
+  · have : y - x = 0 := by linarith
+    rw [h, this]
+
+  · rw [abs_of_nonneg, abs_of_neg]
+    ring
+    linarith
+    linarith
+
+end abs_koan
 
 end Lecture5
