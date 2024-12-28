@@ -18,8 +18,6 @@ namespace thm_4
 -- obtain h | h := Classical.em (x ∈ A)
 
 
-example (a b c : ℝ) : a - b < c ↔ a < c + b := by exact sub_lt_iff_lt_add
-example (a : Prop) : a ∨ ¬ a := by exact Classical.em a
 
 theorem theorem_4 (x : ℝ) (A : Set ℝ)
   (ha : BddAbove A) (he : A.Nonempty) (hx : x ∈ upperBounds A) :

@@ -9,8 +9,9 @@ open Set
 
 namespace thm_6
 
--- Lecture 5, Theorem 6
 
+
+-- Lecture 5, Theorem 6
 -- part 1. If x ∈ ℝ, sup(x + A) = x + sup A.
 
 theorem part1_mine

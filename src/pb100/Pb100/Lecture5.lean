@@ -153,10 +153,7 @@ theorem theorem_3 : IsLUB S 1 := by
 
 end thm_3
 
-
 namespace abs_koan
-
-#check abs
 
 variable (x y : ℝ)
 
@@ -222,6 +219,7 @@ theorem t3 (x y : ℝ): |x * y| = |x| * |y| := by
       exact mul_neg_of_pos_of_neg hx hy
 
     · rw [hy]; simp
+
     · rw [abs_of_pos hx];
       rw [abs_of_pos hy];
       rw [abs_of_pos];
@@ -245,7 +243,7 @@ theorem t4 : |x ^ 2| = x ^ 2 ∧ x ^ 2 = |x| ^ 2 := by
     symm
     apply l4
 
-theorem t5' : |x| ≤ y ↔ -y ≤ x ∧ x ≤ y := by
+theorem abs_le_iff_le_and_le : |x| ≤ y ↔ -y ≤ x ∧ x ≤ y := by
   obtain h | h := le_or_lt x 0
   constructor
   · intro h₁
@@ -260,14 +258,12 @@ theorem t5' : |x| ≤ y ↔ -y ≤ x ∧ x ≤ y := by
   constructor
   · intro h₁
     rw [abs_of_pos h] at h₁
-    constructor
-    · linarith
-    · linarith
+    refine ⟨by linarith, by linarith⟩
   · intro ⟨h₁, h₂⟩
     rw [abs_of_pos h]
     exact h₂
 
-theorem t6 : x ≤ |x| := by
+theorem le_abs : x ≤ |x| := by
   obtain h | h := le_or_lt x 0
   · rw [abs_of_nonpos h]
     linarith
@@ -288,6 +284,7 @@ example (x y : ℝ) : |x - y| = |y - x| := by
   · have h₁ : 0 ≤ y - x := by linarith
     rw [abs_of_nonneg h₁, abs_of_neg h]
     linarith
+
   · have : y - x = 0 := by linarith
     rw [h, this]
 
