@@ -123,6 +123,144 @@ theorem add_mul_le_add_pow (n : ℕ) (c : ℤ) (hc : -1 ≤ c) (hn : 0 < n)
 end thm_1_1_12
 
 
+namespace card1
+
+open Cardinal Function Set
+
+--  mem_singleton_iff {a b : α} : a ∈ ({b} : Set α) ↔ a = b
+--  mapsTo_singleton {x : α} : MapsTo f {x} t ↔ f x ∈ t
+--  injOn_singleton (f : α → β) (a : α) : InjOn f {a}
+--  surjOn_singleton : SurjOn f s {b} ↔ b ∈ f '' s
+--  image_singleton {f : α → β} {a : α} : f '' {a} = {f a}
+
+namespace ex1
+
+def A : Set ℤ := {1}
+def B : Set ℤ := {4}
+
+def f (x : ℤ) : ℤ := x + 3
+
+noncomputable
+def bijection : ↑A ≃ ↑B := by
+    simp [A, B]
+    refine BijOn.equiv f ?_
+    constructor
+    · simp_all only [mapsTo_singleton, mem_singleton_iff]
+      rfl
+    · constructor
+      · simp_all only [injOn_singleton]
+      · simp_all only [surjOn_singleton, image_singleton, mem_singleton_iff]
+        rfl
+
+theorem card_a_eq_card_b : #A = #B := mk_congr bijection
+end ex1
+
+namespace ex2
+
+def A : Set ℤ := {1,2}
+def B : Set ℤ := {4,5}
+
+def f (x : ℤ) : ℤ := x + 3
+
+noncomputable
+def bijection : ↑A ≃ ↑B := by
+    simp [A, B]
+    refine BijOn.equiv f ?_
+    constructor
+    · --
+      dsimp [MapsTo]
+      intro x hx
+      aesop
+    · constructor
+      · --
+        dsimp [InjOn]
+        intro x₁ hx₁ x₂ hx₂ hx
+        simp_all
+        obtain h₁ | h₂ := hx₁
+        · obtain hh₁ | hh₂ := hx₂
+          · linarith
+          · rw [h₁, hh₂] at hx
+            dsimp [f] at hx
+            norm_num at hx
+        · --
+          obtain hh₁ | hh₂ := hx₂
+          · dsimp [f] at hx
+            rw [h₂, hh₁] at hx ⊢
+            norm_num at hx
+          · linarith
+      · --
+        dsimp [SurjOn, f]
+        rw [subset_def]
+        intro x hx
+        simp_all
+        aesop
+
+theorem card_a_eq_card_b : #A = #B := mk_congr bijection
+
+end ex2
+
+
+
+namespace ex3
+-- prove the set of natural numbers are the same size as themselves.
+
+noncomputable
+def bijection : Set ℕ ≃ Set ℕ := by
+  apply Equiv.cast
+  rfl
+
+example : #(Set ℕ) = #(Set ℕ) := mk_congr bijection
+
+end ex3
+
+
+namespace ex4
+-- prove the set of natural numbers has the same cardinality as the set of non
+-- negative even numbers
+
+def Evens : Set ℕ := {2 * n | n : ℕ}
+
+def f (n : ℕ) := 2 * n
+
+lemma set_bijection_on : Set.BijOn f (univ : Set ℕ) Evens := by
+  constructor
+  · --
+    dsimp [MapsTo, f, Evens]
+    intro x hx
+    use x
+  · -- InjOn f Set.univ ∧ SurjOn f Set.univ Evens
+    constructor
+    · -- InjOn f Set.univ
+      dsimp [InjOn]
+      intro x₁ hx₁ x₂ hx₂
+      intro h
+      dsimp [f] at h
+      linarith
+    · -- SurjOn f Set.univ Evens
+      dsimp [SurjOn]
+      rw [subset_def]
+      intro e he
+      simp [f, Even]
+      simp [mem_def, Evens] at he
+      obtain ⟨a, ha⟩ := he
+      rw [←ha]
+      use a
+      ring
+
+theorem main_result : #(univ : Set ℕ) = #Evens :=
+  mk_congr (BijOn.equiv f set_bijection_on)
+
+
+
+
+
+end ex4
+
+
+end card1
+
+
+
 
 
 
