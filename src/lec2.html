@@ -6,11 +6,11 @@
     <page title="Set Size">
       <vid2 desc="" start="00:00:00" end="00:04:48" />
 
-      <p> <blue>Q:</blue> When do two sets `A` and `B` have the same size? </p>
+      <p> <bb>Q:</bb> When do two sets `A` and `B` have the same size? </p>
       
       <p>
-        <blue>A: </blue> Cantor said that two sets have the same size
-        when each of the elements of the both sets can be paired off.
+          <bb>A: </bb> Cantor said that two sets have the same size
+          when each of the elements of the both sets can be paired off.
       </p>
       
       <p>
@@ -22,9 +22,9 @@
         set are equal.
         
         <align>
-          a &amp;\to 1 \\
-          b &amp;\to 2 \\
-          c &amp;\to 3
+          a &\to 1 \\
+          b &\to 2 \\
+          c &\to 3
         </align>
       </p>
 
@@ -54,15 +54,8 @@
       </scribe>
       
       <definition desc="direct image">
-
-        Let `f: A \to B`, if `C \subset A`, we define the <term>direct image</term> `f(C)`
-
-        <align>
-		  f(C)
-          &= \{\forall y \in B,\ \exists x \in C,\ y = f(x) \} \\
-		  &= \{ f(x) : x \in C \}.
-        </align>		  
-
+          Let `f: A \to B`, if `C \subset A`, we define the <term>direct image</term> `f(C)`
+		  \[ f(C) = \{ f(x) : x \in C \} = \{\forall y \in B,\ \exists x \in C,\ y = f(x) \}. \]
       </definition>
       
       <definition desc="inverse image">
@@ -80,15 +73,15 @@
         `f` maps some subsets from `A` to `B`.
         
         <align>
-          f(C) &amp;= \{ y \in B, \exists x \in C, y = f(x) \} \\
-          &amp;= \{ f(x) : x \in C \} \\
+            f(C) &= \{ y \in B, \exists x \in C, y = f(x) \} \\
+            &= \{ f(x) : x \in C \} \\
         </align>
 
         <align>
-          f(\{1, 2\}) &amp;= \{a\}  \\
-          f(\{1, 3\}) &amp;= \{a, c\} \\ 
-          f^{-1}(\{ a \}) &amp;= \{1, 2\} \\
-          f^{-1}(\{a,c,d \}) &amp;= \{1,2,3,4\}
+            f(\{1, 2\}) &= \{a\}  \\
+            f(\{1, 3\}) &= \{a, c\} \\ 
+            f^{-1}(\{ a \}) &= \{1, 2\} \\
+            f^{-1}(\{a,c,d \}) &= \{1,2,3,4\}
         </align>
       </p>
       
@@ -187,7 +180,7 @@
       <p> Here is some short hand for cardinality relations: </p>
 
 	  <ul>
-		<li>if |A| equals |B|, we write `|A| = |B|`.</li>
+		<li>if `|A|` equals `|B|`, we write `|A| = |B|`.</li>
 		<li>if `|A| = |{1, ..., n}|` we write `|A| = n`.</li>
 		<li>if there exists injective function `f:A \to B` we write `|A| \le |B|`.</li>
 		<li>if `|A| \le |B|` but `|A| \ne |B|` we write `|A| \lt |B|`.</li>
@@ -311,7 +304,7 @@
     <page title="Additional Resources">
 	  Sina Hazratpour has a playlist introducing lean4. Here is a video on sets.
       <br/>
-	  <a href="https://www.youtube.com/watch?v=Lji9_p6rkPc&amp;list=PLLSwxwJoqOFFXB1bEL643JIgQMI11bkih&amp;index=2">
+	  <a href="https://www.youtube.com/watch?v=Lji9_p6rkPc&list=PLLSwxwJoqOFFXB1bEL643JIgQMI11bkih&index=2">
 		Sets - Introduction to Proofs with Lean4 (Johns Hopkins)
 	  </a>
 	</page>

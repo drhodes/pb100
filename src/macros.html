@@ -292,9 +292,10 @@
 		    </b>
 	    </span>
 	</define-macro>
-
+    
 	<define-macro name="definition">
 	    <div class="definition" id="definition-[[this]]">
+            
 		    <div class="definition-title">
 		        <a class="definition-link" href="#definition-[[this]]">Definition</a>
 		        <span id="[[this]]-span" class="definition-number"> </span>
@@ -302,6 +303,7 @@
 			        <contents/>
 		        </span>
 		    </div>
+            
 		    <script>
 		        defspan = document.getElementById("[[this]]-span");
 		        defspan.textContent = cur_def();
@@ -354,13 +356,17 @@
 
 	<define-macro name="align">
 	    <div>
-		    \[ \begin{align*}
-		    <contents/> \end{align*} \]
+		    \[
+            \begin{align*}
+		    <contents/>
+            \end{align*}
+            \]
 	    </div>
 	</define-macro>
-
+    
+    <!-- replace anything in an ignore tag with an empty div -->
 	<define-macro name="ignore">
-	    <div/>
+	    <div></div>
 	</define-macro>
 
 	<define-macro name="quote" vars="who, context">
